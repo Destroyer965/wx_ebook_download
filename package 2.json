@@ -1,0 +1,17 @@
+{
+    "id": "kong-swiper",
+    "name": "3d swiper",
+    "version": "1.4",
+    "description": "在原生基础上增加可做3d效果的swiper",
+    "keywords": [
+        "swiper",
+        "banner",
+        "3d-swiper"
+    ],
+    "dcloudext": {
+        "category": [
+            "前端组件",
+            "通用组件"
+        ]
+    }
+}
