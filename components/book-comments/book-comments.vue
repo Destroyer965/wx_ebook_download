@@ -121,7 +121,9 @@
 
 			.comments-box {
 
-
+				.comments-item{
+					margin-bottom: 15px;
+				}
 				.comments-item-top {
 					display: flex;
 					justify-content: flex-start;
@@ -132,7 +134,7 @@
 
 					image {
 						width: 100rpx;
-						height: 100rpx;
+						height: 140rpx;
 						border-radius: 50%;
 						margin-right: 20rpx;
 					}

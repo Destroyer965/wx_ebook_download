@@ -167,9 +167,6 @@
 		height: auto !important;
 		
 	}
-	page{
-		position: relative;
-	}
 	.detail {
 		background-color: $my-bg-color;
 		padding-bottom: 70px;
@@ -276,7 +273,7 @@
 			width: 100%;
 		}
 		.myinput{
-			position: absolute;
+			position: fixed;
 			bottom: 0;
 			left: 0;
 			width: 100%;

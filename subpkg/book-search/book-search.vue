@@ -3,7 +3,8 @@
 		<!-- 搜索框 -->
 		<view class="search-box">
 			<view class="search-item">
-				<input :value="inputValue" :auto-focus="true" @input="inputValueHandler" class="search-input" placeholder="请输入你要搜索的书名" />
+				<input confirm-type="search" :value="inputValue" :auto-focus="true" @input="inputValueHandler" class="search-input"
+					placeholder="请输入你要搜索的书名" />
 				<icon class="search-icon" size=18 type="search"></icon>
 				<button class="search-btn" @click="search">搜索</button>
 			</view>
@@ -93,7 +94,7 @@
 				uni.showModal({
 					title: '提示',
 					content: '你确定要删除所有历史记录吗?',
-					success: res =>  {
+					success: res => {
 						if (res.confirm) {
 							this.searchHistory = [];
 						} else if (res.cancel) {
@@ -112,16 +113,15 @@
 			},
 			// 搜索
 			search() {
-				let set = new Set();
-				set.add(this.inputValue);
-				set.forEach(item => {
-					console.log(item)
-				})
+				// 　去除字符串内所有的空格
+				let historyName = this.inputValue.replace(/\s*/g, "");
 				let obj = {
 					id: Math.random(),
-					historyName: this.inputValue
+					historyName
 				}
-				this.searchHistory.unshift(obj)
+				if (historyName != "") {
+					this.searchHistory.unshift(obj)
+				}
 				this.inputValue = ''
 			},
 

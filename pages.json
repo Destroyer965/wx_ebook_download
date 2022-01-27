@@ -17,7 +17,11 @@
 			"path": "pages/readerCircle/readerCircle",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+				// #ifdef MP-WEIXIN
+				"navigationStyle": "custom"
+				// #endif
+
 			}
 
 		}
@@ -28,7 +32,7 @@
 			"path": "bookDetails/bookDetails",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarTextStyle":"#000",
+				"navigationBarTextStyle": "#000",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#F1F1F2"
 
@@ -47,25 +51,36 @@
 				"enablePullDownRefresh": false
 			}
 
-		}    ,{
-                    "path" : "problem-feedback/problem-feedback",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "download-history/download-history",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+		}, {
+			"path": "problem-feedback/problem-feedback",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "download-history/download-history",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "contact-me/contact-me",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		},{
+			"path": "write-friend-circle/write-friend-circle",
+			"style": {
+				"navigationBarTitleText": "写说说",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTextStyle":"black"
+			}
+		}]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "#fff",

@@ -69,13 +69,13 @@
 				</view>
 				<uni-icons type="right"></uni-icons>
 			</navigator>
-			<view class="list-item">
+			<navigator url="../../subpkg/contact-me/contact-me" class="list-item">
 				<view class="list-item-text">
 					<text class="iconfont icon-tuichu"></text>
 					<text class="item-text">联系作者</text>
 				</view>
 				<uni-icons type="right"></uni-icons>
-			</view>
+			</navigator>
 			<view class="list-item" @click="logout">
 				<view class="list-item-text">
 					<text class="iconfont icon-tuichu"></text>

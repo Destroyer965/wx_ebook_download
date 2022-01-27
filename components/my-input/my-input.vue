@@ -1,7 +1,7 @@
 <template>
 	<view class="my-input">
 		<view class="my-input-top">
-			<input :auto-focus="true" v-model="inputValue" class="input" cursor-spacing="100" placeholder="输入评论..." />
+			<input :auto-focus="true" confirm-type="send"  v-model="inputValue" cursor-spacing="20" class="input"  placeholder="输入评论..." />
 			<text  class="send" @click="send">发布</text>
 		</view>
 	</view>
@@ -28,12 +28,10 @@
 	@import url("/static/fonts/iconfont.css");
 
 	.my-input {
-
 		width: 100%;
 		height: 70px;
 		padding: 10px 0;
 		background-color: #fff;
-
 		.my-input-top {
 			display: flex;
 			justify-content: space-between;
@@ -46,6 +44,7 @@
 				flex: 5;
 				height: 35px;
 				padding-left: 20px;
+		
 				background-color: $my-bg-color;
 				border-radius: 20px;
 			}

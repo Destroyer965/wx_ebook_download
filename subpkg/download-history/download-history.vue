@@ -1,8 +1,8 @@
 <template>
-	<view>
-		<uni-swipe-action>   
+	<view :style="{height: wh + 'px'}">
+		<uni-swipe-action v-if="historyList.length > 0">
 			<block v-for="(item,index) in historyList" :key="item.id">
-				<uni-swipe-action-item class="action-item" :right-options="options" @click="bindClick(index)"
+				<uni-swipe-action-item class="action-item" :right-options="options" @click="bindClick($event,index)"
 					@change="swipeChange($event, item.id)">
 					<view class="action-content">
 						<image class="left-img" :src="item.bookImg">
@@ -18,7 +18,11 @@
 				</uni-swipe-action-item>
 			</block>
 		</uni-swipe-action>
-
+		<empty-result v-else style="height: 100%;">
+			<template v-slot:tips>
+				<view class="tips">你暂时还没有下载历史哦～</view>
+			</template>
+		</empty-result>
 	</view>
 </template>
 
@@ -26,15 +30,16 @@
 	export default {
 		data() {
 			return {
+				wh: 0,
 				options: [{
 					text: '取消',
 					style: {
-						backgroundColor: '#007aff'
+						backgroundColor: '#465cff'
 					}
 				}, {
 					text: '删除',
 					style: {
-						backgroundColor: '#dd524d'
+						backgroundColor: '#ff2b2b'
 					}
 				}],
 				historyList: [{
@@ -68,9 +73,14 @@
 			};
 		},
 		methods: {
-			bindClick(id) {
-				this.historyList.splice(id,1)
-				console.log(id)
+			bindClick(e, id) {
+				if (e.index === 1) {
+					this.historyList.splice(id, 1)
+					uni.showToast({
+						title:"删除成功",
+						duration:2000
+					})
+				}
 			},
 			swipeChange(e, index) {
 				// console.log('当前状态：' + e + '，下标：' + index)
@@ -78,9 +88,14 @@
 		},
 		onLoad() {
 
+			// 获取当前设备信息
+			let sys = uni.getSystemInfoSync();
+			this.wh = sys.windowHeight;
+
 			uni.setNavigationBarTitle({
 				title: '历史下载'
 			});
+
 		}
 	}
 </script>
@@ -121,5 +136,10 @@
 				}
 			}
 		}
+	}
+
+	.tips {
+		color: #b2b2b2;
+		font-size: 24rpx;
 	}
 </style>
