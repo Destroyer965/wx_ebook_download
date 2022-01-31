@@ -1,5 +1,5 @@
 <template>
-	<view class="write-friend-circle" :style="{height: wh + 'px'}">
+	<view class="write-friend-circle" >
 		<view class="wirte-box">
 			<textarea confirm-type="send" maxlength=200 class="textarea" placeholder="分享你的故事..."></textarea>
 			<uni-file-picker class="file-picker" :limit="9" v-model="imageValue" fileMediatype="image" mode="grid"
@@ -19,16 +19,11 @@
 	export default {
 		data() {
 			return {
-				wh: 0,
 				imageValue: [],
 				location: ''
 			};
 		},
 		onLoad() {
-
-			// 获取当前设备信息
-			let sys = uni.getSystemInfoSync();
-			this.wh = sys.windowHeight;
 		},
 		methods: {
 			// 获取上传状态
@@ -68,6 +63,7 @@
 <style lang="scss">
 	.write-friend-circle {
 		width: 100%;
+		height: 100%;
 		background-color: $my-bg-color;
 		overflow: hidden;
 

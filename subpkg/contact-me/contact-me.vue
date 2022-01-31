@@ -1,7 +1,7 @@
 <template>
-	<view class="contact-me" :style="{height: wh + 'px'}">
-		<uni-notice-bar class="notice-bar" showIcon=true showClose=true scrollable="true" single="true"
-			text="[单行] 若你在使用过程中有任何问题都可以扫码添加作者想作者询问"></uni-notice-bar>
+	<view class="contact-me">
+		<uni-notice-bar class="notice-bar" showIcon=true  scrollable="true" single="true"
+			text="你在使用过程中的任何问题都可以扫码添加作者向作者咨询"></uni-notice-bar>
 		<image class="erweima" src="http://wx-ebook-download.oss-cn-chengdu.aliyuncs.com/image/IMG_2530.JPG"></image>
 	</view>
 </template>
@@ -10,15 +10,9 @@
 	export default {
 		data() {
 			return {
-				wh: 0
 			};
 		},
 		onLoad() {
-
-			// 获取当前设备信息
-			let sys = uni.getSystemInfoSync();
-			this.wh = sys.windowHeight;
-
 			uni.setNavigationBarTitle({
 				title: '联系作者'
 			});
@@ -35,6 +29,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		height: 100%;
 		background-color: #F1F4F9;
 
 		.erweima {

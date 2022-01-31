@@ -1,23 +1,25 @@
 <template>
-	<view class="book-search" :style="{height: wh + 'px'}">
+	<view class="book-search">
 		<!-- 搜索框 -->
 		<view class="search-box">
 			<view class="search-item">
-				<input confirm-type="search" :value="inputValue" :auto-focus="true" @input="inputValueHandler" class="search-input"
-					placeholder="请输入你要搜索的书名" />
+				<input confirm-type="search" :value="inputValue" :auto-focus="true" @input="inputValueHandler"
+					class="search-input" placeholder="请输入你要搜索的书名" />
 				<icon class="search-icon" size=18 type="search"></icon>
 				<button class="search-btn" @click="search">搜索</button>
 			</view>
 		</view>
-		<view class="search-content" :style="{height: wh - 55+ 'px'}">
+		<!-- 搜索建议列表 -->
+		<seach-advice-list v-if="isInput" :searchContext="searchContext"></seach-advice-list>
+		<view class="search-content" v-else>
 			<view class="search-other" v-if="searchHistory.length > 0">
 				<view class="search-title">
 					<text class="search-text">历史搜索</text>
 					<uni-icons type="trash" size=26 @click="deleteHistory"></uni-icons>
 				</view>
 				<view class="search-content">
-					<block v-for="item in searchHistory" :key="item.id">
-						<text class="search-item">{{item.historyName}}</text>
+					<block v-for="(item,index) in searchHistory" :key="index">
+						<text class="search-item">{{item}}</text>
 					</block>
 
 				</view>
@@ -28,9 +30,9 @@
 				</view>
 				<view class="search-rank" v-for="item in searchRank" :key="item.id">
 
-					<text v-if="item.rank === 1" class="iconfont icon-redu1"></text>
-					<text v-else-if="item.rank === 2" class="iconfont icon-redu"></text>
-					<text v-else-if="item.rank === 3" class="iconfont icon-redu2"></text>
+					<text v-if="item.rank === 1" class="t-icon t-icon-redu1"></text>
+					<text v-else-if="item.rank === 2" class="t-icon t-icon-redu"></text>
+					<text v-else-if="item.rank === 3" class="t-icon t-icon-redu2"></text>
 					<text v-else class="search-rank-num">{{item.rank}}</text>
 					<text class="search-rank-text">{{item.bookName}}</text>
 
@@ -46,20 +48,15 @@
 	export default {
 		data() {
 			return {
-				wh: 0,
 				content: '确认删除全部历史记录',
 				timer: null,
 				inputValue: '',
-				searchHistory: [{
-						id: 1,
-						historyName: 'Java权威指南'
-					},
-					{
-						id: 2,
-						historyName: '计算机网路'
-					},
-
+				isInput: false,
+				searchHistory: [
+					'Java权威指南',
+					'计算机网路'
 				],
+				// 排行榜
 				searchRank: [{
 						id: 1,
 						rank: 1,
@@ -79,14 +76,24 @@
 						rank: 4,
 						bookName: '计算机网络'
 					},
-				]
+				],
+				// 搜索建议列表
+				searchContext: [{
+					id: 1,
+					title: 'Java核心技术卷I',
+					url: ''
+				}, {
+					id: 2,
+					title: 'Java核心技术卷II',
+					url: ''
+				}, {
+					id: 3,
+					title: 'Java核心技术卷I',
+					url: ''
+				}]
 			};
 		},
-		onLoad() {
-			// 获取当前设备信息
-			let sys = uni.getSystemInfoSync();
-			this.wh = sys.windowHeight;
-		},
+
 		methods: {
 			// 删除历史记录
 			deleteHistory() {
@@ -105,22 +112,31 @@
 			},
 			inputValueHandler(e) {
 				// 对输入框进行防抖处理
-				clearTimeout();
-				this.timer = setTimeout(() => {
-					this.inputValue = e.detail.value
-				}, 500)
+				// clearTimeout();
+				// this.timer = setTimeout(() => {
+				// 	this.inputValue = e.detail.value
+				// }, 500);
+				this.inputValue = e.detail.value
+				if (this.inputValue.trim().length != 0) {
+					console.log(2)
+					this.isInput = true
+				} else {
+					this.isInput = false
+				}
 
 			},
+
 			// 搜索
 			search() {
-				// 　去除字符串内所有的空格
-				let historyName = this.inputValue.replace(/\s*/g, "");
-				let obj = {
-					id: Math.random(),
-					historyName
-				}
-				if (historyName != "") {
-					this.searchHistory.unshift(obj)
+
+				if (this.inputValue.trim().length != 0) {
+					var set = new Set();
+					set.add(this.inputValue);
+					this.searchHistory.forEach(item => {
+						set.add(item)
+					})
+
+					this.searchHistory = [...set]
 				}
 				this.inputValue = ''
 			},
@@ -134,13 +150,13 @@
 	@import url("/static/fonts/iconfont.css");
 
 	.book-search {
-		background-color: $my-bg-color;
+		height: 100%;
 
 		.search-box {
 			display: flex;
 			justify-content: center;
 			width: 100%;
-
+			background-color: #F1F1F2;
 			.search-item {
 				position: relative;
 				display: flex;

@@ -1,6 +1,6 @@
 <!-- 书本详情 -->
 <template>
-	<view class="detail"  @click="myClick">
+	<view class="detail" @click="myClick">
 		<book-introduction :bookimg="bookimg" :bookname="bookname" :bookpublisher="bookpublisher"
 			:bookauthor="bookauthor" :bookisbn="bookisbn" class="book-introduction-card"></book-introduction>
 		<uni-card class="card-data">
@@ -23,11 +23,13 @@
 		<uni-card class="introduction-card">
 			<text class="introduction-card-title">简介</text>
 			<view class="introduction-card-content" :class="{showMoreDetail:isShowMoreDetail}">
-				<text selectable=true user-select=true  @longpress='copyText(introductionContent)' class="model_text">
+				<text selectable=true user-select=true @longpress='copyText(introductionContent)' class="model_text">
 					{{introductionContent}}
 				</text>
-				<text class="model_detail" v-if="!isShowMoreDetail" @click="moreDetail">...<text
-						class="more_detail">更多详情</text></text>
+				<view class="model_detail" v-if="!isShowMoreDetail" @click="moreDetail">
+					<uni-icons color="#4876f1" type="bottom" style="margin-right: 10rpx;"></uni-icons>
+					<text class="more_detail">更多详情</text>
+				</view>
 				<view class="model_put_away" v-else @click="putAway">
 					<uni-icons color="#4876f1" type="top" style="margin-right: 10rpx;"></uni-icons>
 					<text>收起</text>
@@ -37,7 +39,8 @@
 		</uni-card>
 		<uni-goods-nav class="bottom" @click="onClick" @buttonClick="buttonClick" :buttonGroup="buttonGroup"
 			:fill="true" :options="options" />
-		<book-comments @writeComment="writeComment" class="book-comments" :commentUserinfo="commentUserinfo"></book-comments>
+		<book-comments @writeComment="writeComment" class="book-comments" :commentUserinfo="commentUserinfo">
+		</book-comments>
 		<my-input @send="send" class="myinput" v-if="isInputShow"></my-input>
 	</view>
 </template>
@@ -47,7 +50,7 @@
 		data() {
 			return {
 				wh: 0,
-				isInputShow:false,
+				isInputShow: false,
 				bookimg: 'https://img.alicdn.com/imgextra/i1/1049653664/O1CN01x8yrFa1cw9ruiMJLK_!!0-item_pic.jpg_430x430q90.jpg',
 				bookname: 'Java从入门到精通',
 				bookpublisher: '清华大学出版社',
@@ -114,7 +117,7 @@
 			uni.setNavigationBarTitle({
 				title: '书本详情'
 			});
-			
+
 		},
 		methods: {
 			buttonClick(e) {
@@ -133,29 +136,29 @@
 			putAway() {
 				this.isShowMoreDetail = false
 			},
-			myClick(){
-				this.isInputShow =false
+			myClick() {
+				this.isInputShow = false
 			},
-			writeComment(){
+			writeComment() {
 				this.isInputShow = !this.isInputShow
 			},
-			send(value){
+			send(value) {
 				console.log(value)
 				this.isInputShow = false
 			},
 			// 长按复制
-			copyText(data){
+			copyText(data) {
 				uni.setClipboardData({
-					data:data,
+					data: data,
 					success() {
 						uni.showToast({
-							title:'已复制到剪贴板',
-							icon:'none',
-							position:'top'
-						        })
-							}
+							title: '已复制到剪贴板',
+							icon: 'none',
+							position: 'top'
 						})
-				
+					}
+				})
+
 			}
 		}
 	}
@@ -165,11 +168,13 @@
 	.showMoreDetail {
 		overflow: unset !important;
 		height: auto !important;
-		
+
 	}
+
 	.detail {
 		background-color: $my-bg-color;
 		padding-bottom: 70px;
+
 		.book-introduction-card {
 			padding-top: 40rpx;
 		}
@@ -272,7 +277,8 @@
 			left: 0;
 			width: 100%;
 		}
-		.myinput{
+
+		.myinput {
 			position: fixed;
 			bottom: 0;
 			left: 0;

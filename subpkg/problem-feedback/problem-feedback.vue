@@ -1,5 +1,5 @@
 <template>
-	<view class="problem-feedback" :style="{height: wh + 'px'}">
+	<view class="problem-feedback">
 		<view class="problem-option">
 			<view class="problem-option-head">
 				<text class="problem-option-head-text">问题和意见</text>
@@ -35,14 +35,11 @@
 		
 		data() {
 			return {
-				wh: 0,
 				imageValue: []
 			};
 		},
 		onLoad() {
-			// 获取当前设备信息
-			let sys = uni.getSystemInfoSync();
-			this.wh = sys.windowHeight;
+	
 		},
 		methods: {
 			// 获取上传状态
@@ -77,7 +74,7 @@
 		width: 100%;
 		height: 100%;
 		background-color: $my-bg-color;
-
+		padding-bottom: 100px;
 		.problem-option {
 			width: 100%;
 
@@ -106,7 +103,7 @@
 			}
 
 			.uni-input {
-				height: 30px;
+				height: 35px;
 				background-color: #fff;
 				display: flex;
 				align-items: center;
@@ -118,6 +115,7 @@
 		.submit {
 			width: 95%;
 			margin: 30px auto;
+	
 			background-color: $my-color-base;
 		}
 	}

@@ -414,6 +414,7 @@
 	.uni-fab__content--other-platform {
 		border-width: 0px;
 		box-shadow: $uni-shadow-base;
+		z-index: 999;
 	}
 
 	.uni-fab__content--left {

@@ -1,5 +1,5 @@
 <template>
-	<view class="person" :style="{height: wh + 'px'}">
+	<view class="person">
 		<view class="userinfo">
 			<view class="userinfo-top" v-if="isLogin">
 				<view class="user-baseinfo">
@@ -10,9 +10,9 @@
 						<text class="user-nickname">
 							🌻
 						</text>
-						<text class="user-grade iconfont icon-chuangxianghuangjinvip">
+						<view class="user-grade t-icon t-icon-chuangxianghuangjinvip">
 
-						</text>
+						</view>
 					</view>
 				</view>
 				<view class="sign-in" @click="signIn">签到</view>
@@ -22,11 +22,11 @@
 					<view class="user-avartar">
 					</view>
 					<view class="user-baseinfo-right">
-			
+
 						<text class="user-nickname" style="font-size: 18px;">
 							请登录
 						</text>
-						
+
 					</view>
 				</view>
 			</view>
@@ -63,7 +63,7 @@
 				<uni-icons type="right"></uni-icons>
 			</view>
 			<navigator url="../../subpkg/problem-feedback/problem-feedback" class="list-item">
-				<view  class="list-item-text">
+				<view class="list-item-text">
 					<text class="iconfont icon-wentifankui"></text>
 					<text class="item-text">问题反馈</text>
 				</view>
@@ -106,8 +106,7 @@
 	export default {
 		data() {
 			return {
-				isLogin:true,
-				wh: 0,
+				isLogin: true,
 				downloadNum: 999,
 				collectionNum: 999,
 				integral: 999
@@ -115,30 +114,23 @@
 		},
 		methods: {
 			// 签到
-			signIn(){
+			signIn() {
 				uni.showToast({
-					title:'签到成功'
+					title: '签到成功'
 				})
 			},
-			logout(){
-				uni.showModal({
-				    title: '提示',
-				    content: '你确定要退出登录嘛?',
-				    success: function (res) {
-				        if (res.confirm) {
-				            console.log('用户点击确定');
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }
-				});
+			logout() {
+				uni.showActionSheet({
+					title:'你确定要退出吗？',
+					itemList:['退出登录'],
+					itemColor:'#FE2B2B',
+					success() {
+						console.log('退出成功')
+					}
+				})
 			}
 		},
-		onLoad() {
-			// 获取当前设备信息
-			let sys = uni.getSystemInfoSync();
-			this.wh = sys.windowHeight;
-		},
+
 	}
 </script>
 
@@ -148,6 +140,7 @@
 	.person {
 		position: relative;
 		background-color: $my-bg-color;
+		height: 100%;
 
 		.userinfo {
 			height: 350rpx;
@@ -188,8 +181,12 @@
 							font-size: 50rpx;
 						}
 
-						.iconfont {
-							font-size: 50rpx;
+						.user-grade {
+							width: 90px;
+							height: 29px;
+							background-repeat: no-repeat;
+							background-position: center;
+							background-size: 100% 100%;
 						}
 					}
 
@@ -272,7 +269,10 @@
 					align-items: center;
 					margin-right: 20rpx;
 
-				
+					.iconfont {
+						color: #C0C0C0;
+					}
+
 					.support-subject-text {
 						color: #C0C0C0;
 						font-size: 14px;

@@ -29,7 +29,7 @@
 	"subPackages": [{
 		"root": "subpkg",
 		"pages": [{
-			"path": "bookDetails/bookDetails",
+			"path": "book-details/book-details",
 			"style": {
 				"navigationBarTitleText": "",
 				"navigationBarTextStyle": "#000",

@@ -1,5 +1,5 @@
 <template>
-	<view :style="{height: wh + 'px'}">
+	<view>
 		<uni-swipe-action v-if="historyList.length > 0">
 			<block v-for="(item,index) in historyList" :key="item.id">
 				<uni-swipe-action-item class="action-item" :right-options="options" @click="bindClick($event,index)"
@@ -87,11 +87,6 @@
 			}
 		},
 		onLoad() {
-
-			// 获取当前设备信息
-			let sys = uni.getSystemInfoSync();
-			this.wh = sys.windowHeight;
-
 			uni.setNavigationBarTitle({
 				title: '历史下载'
 			});

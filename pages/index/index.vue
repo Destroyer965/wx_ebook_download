@@ -1,5 +1,5 @@
 <template>
-	<view class="home" :style="{height: wh + 'px'}">
+	<view class="home">
 		<view class="search">
 			<navigator url="../../subpkg/book-search/book-search" class="search-btn">
 				<icon size=18 type="search" style="margin: 0 20px;"></icon>
@@ -52,7 +52,7 @@
 			<my-card class="card" :title="title">
 				<block v-slot:card-item>
 					<view class="card-item-list">
-						<navigator url="../../subpkg/bookDetails/bookDetails" class="card-item">
+						<navigator url="../../subpkg/book-details/book-details" class="card-item">
 							<image
 								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
 								mode=""></image>
