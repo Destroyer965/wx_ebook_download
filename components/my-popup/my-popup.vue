@@ -26,7 +26,6 @@
 </script>
 
 <style lang="less">
-	@import url("/static/fonts/iconfont.css");
 
 	.my-popup-box {
 		display: flex;

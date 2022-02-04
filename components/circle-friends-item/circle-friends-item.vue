@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="circle-friends-item" v-for="item in previewList" :key="item.id">
+		<view class="circle-friends-item" v-for="(item,index) in previewList" :key="item.id">
 			<view class="left-img">
 				<image :src="item.userAvatar"></image>
 			</view>
@@ -11,19 +11,19 @@
 						{{item.contentText}}
 					</view>
 					<view class="circle-friends-content-img">
-						<block v-for="(img,index) in item.contentImg" :key="index">
-							<image @click="previewImg(img)" :src="img">
+						<block v-for="(img,index) in item.contentImg" :key="item.id">
+							<image @click="previewImg(imgSrc)" :src="img.imgSrc">
 							</image>
-
 						</block>
 					</view>
 				</view>
+				<view class="location" @click="viewLocation">{{item.location}}</view>
 				<view class="right-box-bottom">
 					<text class="left-time">{{item.previewTime}}</text>
 
 					<view class="right-more">
-						<my-popup v-if="popupShow" ref="box" class="my-popup"></my-popup>
-						<text class="iconfont icon-gengduo" @click="more"></text>
+						<my-popup v-show="popupShow" ref="more" class="my-popup"></my-popup>
+						<text class="iconfont icon-gengduo" @click="more($event,index)"></text>
 					</view>
 				</view>
 				<view class="review">
@@ -68,13 +68,22 @@
 			previewImg(imgSrc) {
 				previewImage(imgSrc);
 			},
-			more() {
-				this.popupShow = !this.popupShow
+			more(e, index) {
+				console.log(e)
+				console.log(this.$refs)
+				this.$refs.more[index].$options.parent.popupShow = !this.popupShow	
+				// this.popupShow = !this.popupShow
 				this.popupShow ? this.showMask = true : this.showMask = false
 			},
 			mask() {
 				this.popupShow = false;
 				this.showMask = false
+			},
+			viewLocation(){
+				uni.openLocation({
+					longitude:116.39747,
+					latitude:39.9085
+				})
 			}
 
 		},
@@ -82,21 +91,14 @@
 			let sys = uni.getSystemInfoSync();
 			this.winHeight = sys.screenHeight
 		},
-		updated(){
-			// 显示遮罩层，隐藏tabbar
-			// if (this.showMask) {
-			// 	uni.hideTabBar()
-			// }else{
-			// 	uni.showTabBar()
-			// }
-		}
+
 
 
 	}
 </script>
 
 <style lang="scss">
-	@import url("/static/fonts/iconfont.css");
+
 
 	.circle-friends-item {
 		display: flex;
@@ -142,6 +144,11 @@
 					height: 100px;
 					margin-bottom: 5px;
 				}
+			}
+
+			.location {
+				color: #576B95;
+				font-size: 13px;
 			}
 
 			.right-box-bottom {

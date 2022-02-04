@@ -2,12 +2,9 @@
 	<view class="book-search">
 		<!-- 搜索框 -->
 		<view class="search-box">
-			<view class="search-item">
-				<input confirm-type="search" :value="inputValue" :auto-focus="true" @input="inputValueHandler"
-					class="search-input" placeholder="请输入你要搜索的书名" />
-				<icon class="search-icon" size=18 type="search"></icon>
-				<button class="search-btn" @click="search">搜索</button>
-			</view>
+			<uni-easyinput confirm-type="search" :value="inputValue" :focus=true 	@input="inputValueHandler"
+				class="search-input" :inputBorder=false placeholder="请输入你要搜索的书名" prefixIcon="search" clearSize=18>
+			</uni-easyinput>
 		</view>
 		<!-- 搜索建议列表 -->
 		<seach-advice-list v-if="isInput" :searchContext="searchContext"></seach-advice-list>
@@ -30,13 +27,11 @@
 				</view>
 				<view class="search-rank" v-for="item in searchRank" :key="item.id">
 
-					<text v-if="item.rank === 1" class="t-icon t-icon-redu1"></text>
-					<text v-else-if="item.rank === 2" class="t-icon t-icon-redu"></text>
+					<text v-if="item.rank === 1" class="t-icon t-icon-redu11"></text>
+					<text v-else-if="item.rank === 2" class="t-icon t-icon-redu1"></text>
 					<text v-else-if="item.rank === 3" class="t-icon t-icon-redu2"></text>
 					<text v-else class="search-rank-num">{{item.rank}}</text>
 					<text class="search-rank-text">{{item.bookName}}</text>
-
-
 				</view>
 			</view>
 		</view>
@@ -116,14 +111,13 @@
 				// this.timer = setTimeout(() => {
 				// 	this.inputValue = e.detail.value
 				// }, 500);
-				this.inputValue = e.detail.value
+				
+				this.inputValue = e
 				if (this.inputValue.trim().length != 0) {
-					console.log(2)
 					this.isInput = true
 				} else {
 					this.isInput = false
 				}
-
 			},
 
 			// 搜索
@@ -142,7 +136,7 @@
 			},
 
 
-		}
+		},
 	}
 </script>
 
@@ -156,48 +150,13 @@
 			display: flex;
 			justify-content: center;
 			width: 100%;
-			background-color: #F1F1F2;
-			.search-item {
-				position: relative;
-				display: flex;
+			height: auto;
+
+			.search-input {
 				width: 90%;
-				height: 70rpx;
-				margin: 20rpx 0 20rpx 0;
-
-				.search-icon {
-					position: absolute;
-					left: 20rpx;
-					top: 16rpx;
-				}
-
-				.input-placeholder {
-					font-size: 28rpx;
-				}
-
-				.search-input {
-					flex: 4;
-					height: 100%;
-					background-color: #fff;
-					padding-left: 70rpx;
-					border-top-left-radius: 15px;
-					border-top-right-radius: 0px;
-					border-bottom-left-radius: 15px;
-					border-bottom-right-radius: 0px;
-				}
-
-				.search-btn {
-					flex: 1;
-					height: 100%;
-					text-align: center;
-					color: #fff;
-					font-size: 28rpx;
-					line-height: 70rpx;
-					background: linear-gradient(to right, #fa709a 0%, #fee140 100%);
-					border-top-left-radius: 0;
-					border-top-right-radius: 15px;
-					border-bottom-left-radius: 0;
-					border-bottom-right-radius: 15px;
-				}
+				border-radius: 15px;
+				background-color: $my-bg-color;
+				margin-top: 10px;
 			}
 
 		}

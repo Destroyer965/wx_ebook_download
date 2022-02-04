@@ -8,45 +8,67 @@
 		</view>
 		<view class="top">
 
-			<kong-swiper class="swiper" autoplay=true indicator-dots:true :swiperList="list" next-margin="46rpx" previous-margin="46rpx"
-				space-between="20rpx" scale="0.8" circular></kong-swiper>
+			<kong-swiper class="swiper" autoplay=true indicator-dots:true :swiperList="list" next-margin="46rpx"
+				previous-margin="46rpx" space-between="20rpx" scale="0.8" circular></kong-swiper>
 		</view>
-		<view class="classification">
-			<view class="classification-card">
+		<swiper class="classification" indicator-dots=true>
+			<swiper-item class="classification-card">
 				<navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
 					<image src="../../static/image/go.jpeg" mode=""></image>
 					<text class="classification-name">go</text>
 				</navigator>
-				<view class="classification-item">
+				<navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
 					<image src="../../static/image/go.jpeg" mode=""></image>
 					<text class="classification-name">go</text>
-				</view>
-				<view class="classification-item">
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
 					<image src="../../static/image/go.jpeg" mode=""></image>
 					<text class="classification-name">go</text>
-				</view>
-				<view class="classification-item">
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
 					<image src="../../static/image/go.jpeg" mode=""></image>
 					<text class="classification-name">go</text>
-				</view>
-				<view class="classification-item">
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
 					<image src="../../static/image/go.jpeg" mode=""></image>
 					<text class="classification-name">go</text>
-				</view>
-				<view class="classification-item">
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
 					<image src="../../static/image/go.jpeg" mode=""></image>
 					<text class="classification-name">go</text>
-				</view>
-				<view class="classification-item">
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
 					<image src="../../static/image/go.jpeg" mode=""></image>
 					<text class="classification-name">go</text>
-				</view>
-				<view class="classification-item">
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
 					<image src="../../static/image/go.jpeg" mode=""></image>
 					<text class="classification-name">go</text>
-				</view>
-			</view>
-		</view>
+				</navigator>
+			</swiper-item>
+			<swiper-item class="classification-card">
+				<navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
+					<image src="../../static/image/go.jpeg" mode=""></image>
+					<text class="classification-name">java</text>
+				</navigator>
+				<navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
+					<image src="../../static/image/go.jpeg" mode=""></image>
+					<text class="classification-name">java</text>
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
+					<image src="../../static/image/go.jpeg" mode=""></image>
+					<text class="classification-name">java</text>
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
+					<image src="../../static/image/go.jpeg" mode=""></image>
+					<text class="classification-name">java</text>
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
+					<image src="../../static/image/go.jpeg" mode=""></image>
+					<text class="classification-name">java</text>
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
+					<image src="../../static/image/go.jpeg" mode=""></image>
+					<text class="classification-name">java</text>
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
+					<image src="../../static/image/go.jpeg" mode=""></image>
+					<text class="classification-name">java</text>
+				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
+					<image src="../../static/image/go.jpeg" mode=""></image>
+					<text class="classification-name">java</text>
+				</navigator>
+			</swiper-item>
+		</swiper>
 		<view class="content">
 
 			<my-card class="card" :title="title">
@@ -378,11 +400,7 @@
 			}
 
 		},
-		onLoad() {
-			// 获取当前设备信息
-			let sys = uni.getSystemInfoSync();
-			this.wh = sys.windowHeight;
-		},
+		
 		methods: {
 
 		},
@@ -395,14 +413,14 @@
 
 <style lang="scss" scoped>
 	.home {
-		background-color: #C0C0C0;
+		background-color: $my-bg-color;
 
 		.search {
 			position: fixed;
 			top: 0;
 			width: 100%;
 			height: 70rpx;
-			padding-bottom: 20px;
+			padding-bottom: 15px;
 			background-color: $my-color-base;
 			z-index: 999;
 
@@ -419,9 +437,9 @@
 
 		.top {
 
-			    margin-top: 109rpx;
-			    height: 169px;
-			    background-color: #fff;
+			margin-top: 109rpx;
+			height: 169px;
+			background-color: #fff;
 
 			.swiper {
 				width: 100%;
@@ -454,12 +472,14 @@
 			background-color: #fff;
 
 			.classification-card {
-				width: 95%;
+				position: unset !important;
+				width: 95% !important;
 				display: flex;
 				flex-wrap: wrap;
 				justify-content: space-around;
 				align-items: center;
 				height: 100%;
+				margin: 0 auto;
 
 				.classification-item {
 					width: 150rpx;
@@ -483,7 +503,9 @@
 		}
 
 		.content {
-			margin: 10px 0;
+			margin-top: 10px;
+			padding-bottom: 10px;
+			background-color: #fff;
 
 			.card {
 				box-shadow: 3px 3px 3px #aaaaaa;

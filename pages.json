@@ -4,7 +4,7 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "电子书下载",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/person/person",
@@ -31,8 +31,7 @@
 		"pages": [{
 			"path": "book-details/book-details",
 			"style": {
-				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "#000",
+				"navigationBarTitleText": "书本详情",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#F1F1F2"
 

@@ -109,16 +109,9 @@
 			};
 		},
 		onLoad() {
-			// 获取当前设备信息
-			let sys = uni.getSystemInfoSync();
-			this.wh = sys.windowHeight;
-		},
-		mounted() {
-			uni.setNavigationBarTitle({
-				title: '书本详情'
-			});
 
 		},
+	
 		methods: {
 			buttonClick(e) {
 				console.log(e)
