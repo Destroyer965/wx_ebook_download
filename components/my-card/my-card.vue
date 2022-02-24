@@ -1,8 +1,8 @@
 <template>
 	<view class="card">
 		<view class="card-title">
-			<text class="title">{{title}}</text>
-			<navigator class="more" url="#">更多&nbsp;&gt;</navigator>
+			<text class="title">{{bookinfo.categoryName}}</text>
+			<view class="more" @click="more(bookinfo.id,bookinfo.categoryName)">更多&nbsp;&gt;</view>
 		</view>
 		<slot name="card-item"></slot>
 	</view>
@@ -11,17 +11,24 @@
 <script>
 	export default {
 		props:{
-			title:{
-				type:String,
+			bookinfo:{
+				type:Object,
 				default:''
 			}
 		},
 		name: "my-card",
 		data() {
 			return {
-
+				
 			};
-		}
+		},
+		methods:{
+			more(id,categoryname){
+				uni.navigateTo({
+					url:'../../subpkg/book-classify/book-classify?id='+id +'&categoryname='+categoryname
+				})
+			}
+		},
 	}
 </script>
 

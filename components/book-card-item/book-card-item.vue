@@ -1,14 +1,14 @@
 <template>
 	<view>
 		<block v-for="(item,index) in bookClassifyInfo" :key="item.id">
-			<navigator class="card-item" :url="item.bookurl">
-				<image class="left-img" :src="item.bookimg"></image>
+			<navigator class="card-item" url="#">
+				<lazyLoad  width="150rpx" height="150rpx" class="left-img" :src="item.imgUrl"></lazyLoad>
 				<view class="right-box">
-					<text class="item-title my-font-16">{{item.bookname}}</text>
+					<text class="item-title my-font-16">{{item.bookName}}</text>
 					<text class="item-content my-font-14-gray">
-						{{item.bookintroduction}}
+						{{item.bookIntrduction}}
 					</text>
-					<text class="item-publish my-font-14-gray">{{item.bookauthor}}</text>
+					<text class="item-publish my-font-14-gray">{{item.bookAuthor}}</text>
 				</view>
 			</navigator>
 		</block>
@@ -16,7 +16,9 @@
 </template>
 
 <script>
+	import lazyLoad from '@/components/muqian-lazyLoad/muqian-lazyLoad.vue'
 	export default {
+		components:{lazyLoad},
 		props: {
 			'bookClassifyInfo': {
 				type: Array,
@@ -26,7 +28,7 @@
 		name: "book-card-item",
 		data() {
 			return {
-
+				
 			};
 		}
 	}

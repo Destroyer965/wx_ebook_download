@@ -14,6 +14,7 @@
 			return {};
 		},
 		methods:{
+			
 			goHome(){
 				uni.switchTab({
 					url:'../../pages/index/index'
@@ -27,10 +28,14 @@
 <style lang="scss">
 	.empty-result {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-		height: 100%;
-		margin-top: 100px;
+		    flex-direction: column;
+		    align-items: center;
+		    height: 350px;
+		    margin-top: 100px;
+		    position: fixed;
+		    top: 10%;
+		    margin: 0 auto;
+		    width: 100%;
 		.empty-result-img {
 			width: 600rpx;
 			height: 370rpx;

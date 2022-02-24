@@ -8,405 +8,149 @@
 		</view>
 		<view class="top">
 
-			<kong-swiper class="swiper" autoplay=true indicator-dots:true :swiperList="list" next-margin="46rpx"
+			<kong-swiper class="swiper" autoplay=true indicator-dots:true :swiperList="bannerList" next-margin="46rpx"
 				previous-margin="46rpx" space-between="20rpx" scale="0.8" circular></kong-swiper>
 		</view>
-		<swiper class="classification" indicator-dots=true>
-			<swiper-item class="classification-card">
-				<navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">go</text>
-				</navigator>
-				<navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">go</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">go</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">go</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">go</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">go</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">go</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">go</text>
-				</navigator>
-			</swiper-item>
-			<swiper-item class="classification-card">
-				<navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">java</text>
-				</navigator>
-				<navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">java</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">java</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">java</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">java</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">java</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">java</text>
-				</navigator><navigator class="classification-item" url="../../subpkg/book-classify/book-classify">
-					<image src="../../static/image/go.jpeg" mode=""></image>
-					<text class="classification-name">java</text>
-				</navigator>
-			</swiper-item>
-		</swiper>
+		<uni-swiper-dot>
+			<swiper class="classification" indicator-dots=true @change="changeSwiperItem">
+				<swiper-item class="classification-card" v-for="(item,index) in categoryPages" :key="index"
+					style="left: 16rpx;">
+					<view class="classification-item" v-for="item in categoryList" :key="item.id"
+						@click="toCategary(item.categoryName,item.id)">
+						<image :src="item.imgUrl"></image>
+						<text class="classification-name">{{item.categoryName}}</text>
+					</view>
+				</swiper-item>
+			</swiper>
+		</uni-swiper-dot>
 		<view class="content">
+			<my-card class="card" v-for="(item,index) in bookRecommendedList" :key="item.id" :bookinfo="item">
+				<block v-slot:card-item>
+					<view class="card-item-list">
+						<block v-for="child in item.children"  :key="child.id">
+							<view class="card-item" @click="goDetail(child.id)">
+								<lazyLoad class="image" width="160rpx" height="140rpx" :src="child.imgUrl"></lazyLoad>
+								<text class="card-item-text">{{child.bookName}}</text>
+							</view>
+						</block>
 
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<navigator url="../../subpkg/book-details/book-details" class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</navigator>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
 					</view>
 				</block>
 			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-			<my-card class="card" :title="title">
-				<block v-slot:card-item>
-					<view class="card-item-list">
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-						<view class="card-item">
-							<image
-								src="https://img1.baidu.com/it/u=2191085387,3198199511&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-								mode=""></image>
-							<text class="card-item-text">Java核心技术卷I</text>
-						</view>
-					</view>
-				</block>
-			</my-card>
-
+			<uni-load-more iconType="snow" :status="status" :contentText="contentText" v-if="loadingShow">
+			</uni-load-more>
 		</view>
+
 	</view>
 </template>
 
 <script>
+	import {
+		banner,
+		category,
+		recommendedList
+	} from "../../utils/api.js"
+	import lazyLoad from '@/components/muqian-lazyLoad/muqian-lazyLoad.vue'
 	export default {
+		components: {
+			lazyLoad
+		},
 		data() {
 			return {
 				indicatorDots: true,
 				autoplay: true,
 				interval: 3000,
 				duration: 500,
-				// 当前设备可用高度
-				wh: 0,
-				title: 'Java',
-				list: [{
-						image: 'http://t13.baidu.com/it/u=191155337,618510844&fm=224&app=112&f=JPEG?w=500&h=500'
-					},
-					{
-						image: 'https://img1.baidu.com/it/u=302050158,1428065152&fm=253&fmt=auto&app=138&f=PNG?w=491&h=681'
-					},
-					{
-						image: 'https://img1.baidu.com/it/u=3065359493,4178691884&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
-					}
-				]
+				bannerList: [],
+				categoryList: [],
+				bookRecommendedList: [],
+				pageNo: 1,
+				pageSize: 8,
+				categoryPages: 0,
+				recommendPageNo: 1,
+				recommendPageSize: 4,
+				recommendTotal: 0,
+				loadingShow: false,
+				flag: false,
+				status: 'loading',
+				contentText: {
+					contentnomore: "没有更多数据了！😭😭😭"
+				}
 			}
 
 		},
-		
-		methods: {
 
+		methods: {
+			//分类轮播图滑动触发时间
+			changeSwiperItem(e) {
+				this.pageNo = e.detail.current + 1
+				this.getCategory()
+			},
+			//跳转分类页面
+			toCategary(categoryname, id) {
+				uni.navigateTo({
+					url: "../../subpkg/book-classify/book-classify?id=" + id + "&categoryname=" + categoryname,
+				})
+			},
+			// 获取轮播图
+			getBanner() {
+				banner().then(res => {
+					this.bannerList = res
+				});
+			},
+			// 获取分类
+			getCategory() {
+				let params = {
+					pageNo: this.pageNo,
+					pageSize: this.pageSize
+				};
+				category(params).then(res => {
+					this.categoryPages = res.pages
+					this.categoryList = res.records
+				})
+			},
+			//获取图书推荐列表
+			getRecommendedList() {
+				// 打开节流阀
+				this.flag = true
+				let params = {
+					pageNo: this.recommendPageNo,
+					pageSize: this.recommendPageSize
+				};
+				recommendedList(params).then(res => {
+					//将新数据与就数据进行拼接
+					this.bookRecommendedList = [...this.bookRecommendedList, ...res.data]
+					this.recommendTotal = res.total
+				})
+				// 关闭节流阀
+				this.flag = false
+			},
+			goDetail(param) {
+				uni.navigateTo({
+					url: '../../subpkg/book-details/book-details?id=' + param
+				})
+			}
 		},
-		onPullDownRefresh() {
-			console.log(1)
+
+		onLoad() {
+			this.getBanner(),
+				this.getCategory(),
+				this.getRecommendedList()
 		},
+		onReachBottom() {
+			// 数据请求完毕
+			if ((this.recommendPageNo * (this.recommendPageSize * 4)) >= this.recommendTotal) {
+				this.loadingShow = true
+				this.status = 'no-more'
+				return;
+			}
+			//显示加载更多
+			this.loadingShow = true
+			if (this.flag) return;
+			this.recommendPageNo++
+			this.getRecommendedList()
+
+		}
 
 	}
 </script>
@@ -472,7 +216,7 @@
 			background-color: #fff;
 
 			.classification-card {
-				position: unset !important;
+
 				width: 95% !important;
 				display: flex;
 				flex-wrap: wrap;
@@ -522,7 +266,7 @@
 						width: 80px;
 						height: 100%;
 
-						image {
+						.image {
 							width: 100%;
 							height: 70px;
 						}

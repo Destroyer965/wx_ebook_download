@@ -1,21 +1,20 @@
 <!-- 书本详情 -->
 <template>
 	<view class="detail" @click="myClick">
-		<book-introduction :bookimg="bookimg" :bookname="bookname" :bookpublisher="bookpublisher"
-			:bookauthor="bookauthor" :bookisbn="bookisbn" class="book-introduction-card"></book-introduction>
+		<book-introduction :bookimg="bookinfo.imgUrl" :bookname="bookinfo.bookName" :bookpublisher="bookinfo.bookPublish"
+			:bookauthor="bookinfo.bookAuthor" :bookisbn="bookinfo.bookIsbn" class="book-introduction-card"></book-introduction>
 		<uni-card class="card-data">
 			<view class="left-downloadCount">
-				<text class="download-num my-font-size-22">0</text>
+				<text class="download-num my-font-size-22">{{bookinfo.downloadCount}}</text>
 				<text class="download-text">下载次数</text>
 			</view>
 			<view class="center-collectionCount">
-				<text class="collection-num my-font-size-22">0</text>
+				<text class="collection-num my-font-size-22">{{bookinfo.collectionCount}}</text>
 				<text class="collection-text">收藏次数</text>
 			</view>
 			<view class="right-score">
 				<view class="score-num">
-					<uni-rate :readonly="true" :touchable="false" :value="4" />
-
+					<uni-rate :readonly="true" :touchable="false" :value="bookinfo.recommendationIndex" />
 				</view>
 				<text class="score">推荐指数</text>
 			</view>
@@ -24,7 +23,7 @@
 			<text class="introduction-card-title">简介</text>
 			<view class="introduction-card-content" :class="{showMoreDetail:isShowMoreDetail}">
 				<text selectable=true user-select=true @longpress='copyText(introductionContent)' class="model_text">
-					{{introductionContent}}
+					{{bookinfo.bookIntrduction}}
 				</text>
 				<view class="model_detail" v-if="!isShowMoreDetail" @click="moreDetail">
 					<uni-icons color="#4876f1" type="bottom" style="margin-right: 10rpx;"></uni-icons>
@@ -46,18 +45,14 @@
 </template>
 
 <script>
+	import {getBookById} from '../../utils/api'
 	export default {
 		data() {
 			return {
-				wh: 0,
 				isInputShow: false,
-				bookimg: 'https://img.alicdn.com/imgextra/i1/1049653664/O1CN01x8yrFa1cw9ruiMJLK_!!0-item_pic.jpg_430x430q90.jpg',
-				bookname: 'Java从入门到精通',
-				bookpublisher: '清华大学出版社',
-				bookauthor: '明日科技',
-				bookisbn: '9787302581260',
-				isShowMoreDetail: false,
-				introductionContent: '《Java从入门到精通（第6版）》从初学者角度出发，通过通俗易懂的语言、丰富多彩的实例，详细讲解了使用Java语言进行程序开发需要掌握的知识。全书分为23章，内容包括初识Java，熟悉Eclipse开发工具，Java语言基础，流程控制，数组，类和对象，继承、多态、抽象类与接口，包和内部类，异常处理，字符串，常用类库，集合类，枚举类型与泛型，lambda表达式与流处理，I/O（输入/输出），反射与注释，数据库操作，Swing程序设计，Java绘图，多线程，网络通信，奔跑吧小恐龙，MR人脸识别打卡系统。书中所有知识都结合具体实例进行讲解，涉及的程序代码都给出了详细的注释，可以使读者轻松领会Java程序开发的精髓，快速提高开发技能。',
+				bookinfo:null,
+				isShowMoreDetail:false,
+				bookid:0,
 				commentUserinfo: [{
 						id: 1,
 						useravatar: 'http://ebook-download-admin.oss-cn-chengdu.aliyuncs.com/images/touxiang/xiaohuangren.jpg',
@@ -108,14 +103,23 @@
 
 			};
 		},
-		onLoad() {
-
+		onLoad(option) {
+			this.bookid = option.id
+			uni.setNavigationBarColor({
+				frontColor:"#000000",
+				backgroundColor:"#F1F1F2"
+			});
+			this.getBook()
 		},
 	
 		methods: {
-			buttonClick(e) {
+			getBook(){
+				getBookById(this.bookid).then(res => {
+					this.bookinfo = res
+				})
+			},
+			buttonClick(e) {    
 				console.log(e)
-
 			},
 			onClick(e) {
 				uni.showToast({
@@ -157,7 +161,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.showMoreDetail {
 		overflow: unset !important;
 		height: auto !important;
@@ -220,21 +224,22 @@
 			.introduction-card-content {
 				position: relative;
 				width: 90%;
-				height: 250rpx;
+				height: 100px;
 				margin: 10rpx auto 20rpx;
 				text-align: justify;
 				overflow: hidden;
 
 
 				.model_text {
-					font-size: 26rpx;
+					font-size: 26rpx;   
+					line-height: 20px;
 				}
-
+    
 				.model_detail {
-					width: 68px;
+					width: 130rpx;
 					position: absolute;
-					right: 0px;
-					bottom: -4rpx;
+					right: 0;
+					bottom: 0;
 					background: #fff;
 					font-size: 26rpx;
 					color: #657180;

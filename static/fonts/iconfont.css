@@ -1,86 +1,97 @@
 @font-face {
-	font-family: "iconfont";
-	/* Project id 3156295 */
-	src: url('~@/static/fonts/iconfont.ttf');
-
+  font-family: "iconfont"; /* Project id 3156295 */
+  src: url('~@/static/fonts/iconfont.ttf');
 }
 
 .iconfont {
-	font-family: "iconfont" !important;
-	font-size: 16px;
-	font-style: normal;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-xihuan:before {
-	content: "\e86f";
-}
-
-.icon-pinglun:before {
-	content: "\e891";
-}
-
-.icon-gengduo:before {
-	content: "\e626";
-}
-
-.icon-lianxi:before {
-	content: "\e66f";
-}
-
-.icon-biaoqing:before {
-	content: "\e603";
-}
-
-.icon-github:before {
-	content: "\e709";
-}
-
-.icon-mianzeshengming1:before {
-	content: "\e72a";
-}
-
-.icon-chuangxiangqingtongvip:before {
-	content: "\e600";
-}
-
-.icon-chuangxiangbaiyinvip:before {
-	content: "\e601";
-}
-
-.icon-chuangxianghuangjinvip:before {
-	content: "\e602";
-}
-
-.icon-shoucang:before {
-	content: "\e61d";
-}
-
-.icon-xiazaijilu:before {
-	content: "\e6ad";
-}
-
-.icon-wentifankui:before {
-	content: "\e701";
-}
-
-.icon-tuichu:before {
-	content: "\e892";
+.icon-Lv60:before {
+  content: "\e605";
 }
 
 .icon-redu:before {
-	content: "\e642";
+  content: "\e64a";
+}
+
+.icon-chuangxiangzhizunvip:before {
+  content: "\e600";
+}
+
+.icon-xihuan:before {
+  content: "\e86f";
+}
+
+.icon-pinglun:before {
+  content: "\e891";
+}
+
+.icon-gengduo:before {
+  content: "\e626";
+}
+
+.icon-lianxi:before {
+  content: "\e66f";
+}
+
+.icon-biaoqing:before {
+  content: "\e603";
+}
+
+.icon-github:before {
+  content: "\e709";
+}
+
+.icon-mianzeshengming1:before {
+  content: "\e72a";
+}
+
+.icon-chuangxiangqingtongvip:before {
+  content: "\e600";
+}
+
+.icon-chuangxiangbaiyinvip:before {
+  content: "\e601";
+}
+
+.icon-chuangxianghuangjinvip:before {
+  content: "\e602";
+}
+
+.icon-shoucang:before {
+  content: "\e61d";
+}
+
+.icon-xiazaijilu:before {
+  content: "\e6ad";
+}
+
+.icon-wentifankui:before {
+  content: "\e701";
+}
+
+.icon-tuichu:before {
+  content: "\e892";
 }
 
 .icon-redu1:before {
-	content: "\e659";
+  content: "\e642";
+}
+
+.icon-redu11:before {
+  content: "\e659";
 }
 
 .icon-redu2:before {
-	content: "\e660";
+  content: "\e660";
 }
 
 .icon-bi:before {
-	content: "\e608";
+  content: "\e608";
 }
+

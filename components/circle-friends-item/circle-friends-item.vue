@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view @click="hideIsShow">
 		<view class="circle-friends-item" v-for="(item,index) in previewList" :key="item.id">
 			<view class="left-img">
 				<image :src="item.userAvatar"></image>
@@ -11,8 +11,8 @@
 						{{item.contentText}}
 					</view>
 					<view class="circle-friends-content-img">
-						<block v-for="(img,index) in item.contentImg" :key="item.id">
-							<image @click="previewImg(imgSrc)" :src="img.imgSrc">
+						<block v-for="(img,index) in item.contentImg" :key="img.id">
+							<image @click="previewImg(img.imgSrc)" :src="img.imgSrc">
 							</image>
 						</block>
 					</view>
@@ -22,8 +22,8 @@
 					<text class="left-time">{{item.previewTime}}</text>
 
 					<view class="right-more">
-						<my-popup v-show="popupShow" ref="more" class="my-popup"></my-popup>
-						<text class="iconfont icon-gengduo" @click="more($event,index)"></text>
+						<my-popup ref="more" class="my-popup"  :class="[isShow == index ? 'show' : 'hide']"  ></my-popup>
+						<text class="iconfont icon-gengduo" @click.stop="more(index)"></text>
 					</view>
 				</view>
 				<view class="review">
@@ -41,7 +41,6 @@
 				</view>
 			</view>
 		</view>
-		<view class="mask" @click="mask" v-if="showMask" :style="{height:winHeight + 'px'}"></view>
 	</view>
 
 </template>
@@ -59,37 +58,33 @@
 		name: "circle-friends-item",
 		data() {
 			return {
-				popupShow: false,
-				showMask: false,
-				winHeight: 0
+				isShow: -1,
 			};
 		},
 		methods: {
 			previewImg(imgSrc) {
+				console.log(imgSrc)
 				previewImage(imgSrc);
 			},
-			more(e, index) {
-				console.log(e)
-				console.log(this.$refs)
-				this.$refs.more[index].$options.parent.popupShow = !this.popupShow	
-				// this.popupShow = !this.popupShow
-				this.popupShow ? this.showMask = true : this.showMask = false
+			more(index) {
+				if (index == this.isShow) {
+					this.isShow = -1
+					return false
+				};
+				this.isShow = index
 			},
-			mask() {
-				this.popupShow = false;
-				this.showMask = false
+			// 隐藏
+			hideIsShow: function() {
+				this.isShow = -1;
 			},
-			viewLocation(){
+
+			viewLocation() {
 				uni.openLocation({
-					longitude:116.39747,
-					latitude:39.9085
+					longitude: 116.39747,
+					latitude: 39.9085
 				})
 			}
 
-		},
-		created() {
-			let sys = uni.getSystemInfoSync();
-			this.winHeight = sys.screenHeight
 		},
 
 
@@ -98,7 +93,13 @@
 </script>
 
 <style lang="scss">
+	.show {
+		display: block;
+	}
 
+	.hide {
+		display: none;
+	}
 
 	.circle-friends-item {
 		display: flex;
@@ -238,14 +239,5 @@
 		}
 
 
-	}
-
-	.mask {
-		width: 100%;
-		background-color: rgba(0, 0, 0, 0);
-		position: fixed;
-		left: 0;
-		top: 0;
-		z-index: 99;
 	}
 </style>

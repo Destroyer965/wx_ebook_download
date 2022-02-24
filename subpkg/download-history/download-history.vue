@@ -30,7 +30,6 @@
 	export default {
 		data() {
 			return {
-				wh: 0,
 				options: [{
 					text: '取消',
 					style: {

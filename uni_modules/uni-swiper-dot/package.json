@@ -1,13 +1,14 @@
 {
-  "id": "uni-load-more",
-  "displayName": "uni-load-more 加载更多",
-  "version": "1.3.3",
-  "description": "LoadMore 组件，常用在列表里面，做滚动加载使用。",
+  "id": "uni-swiper-dot",
+  "displayName": "uni-swiper-dot 轮播图指示点",
+  "version": "1.2.0",
+  "description": "自定义轮播图指示点组件",
   "keywords": [
     "uni-ui",
     "uniui",
-    "加载更多",
-    "load-more"
+    "轮播图指示点",
+    "dot",
+    "swiper"
 ],
   "repository": "https://github.com/dcloudio/uni-ui",
   "engines": {

@@ -8,7 +8,7 @@
 		:skip-hidden-item-layout="skipHiddenItemLayout" :disable-touch="disableTouch" :touchable="touchable"
 		:easing-function="easingFunction" @change="swiperChange" @transition="swiperTransition"
 		@animationfinish="swiperAnimationfinish">
-		<swiper-item v-for="(item,index) in swiperList" :key="index">
+		<swiper-item v-for="(item,index) in swiperList" :key="index" @click="toDetail(item)">
 				<!-- 1.当前展示为第1项时，swiperList最后一项和第二项的transformOrigin值分别为'right center'和'left center'，其余项值为'center center' -->
 				<!-- 2.当前展示为最后一项时，swiperList倒数第2项和第1项的transformOrigin值分别为'right center'和'left center'，其余项值为'center center' -->
 				<!-- 3.当前展示为其他项（非第1和最后1项）时，swiperList当前项的前1项和后1项的justifyContent值分别为'right center'和'left center'，其余项值为'center center' -->
@@ -41,7 +41,7 @@
 									? (vertical ? 'center top' : 'left center') 
 									: index == swiperCurrent - 1 ? (vertical ? 'center bottom' : 'right center') : 'center center'}">
 							<slot :swiperItem="item" :swiperCurrent="index">
-								<image class="image" :src="item.image"></image>
+								<image class="image" :src="item.imgUrl"></image>
 							</slot>
 					</view>
 				</view>
@@ -174,6 +174,11 @@
 			swiperClick(e) {
 				let index = e.currentTarget.dataset.index;
 				this.$emit('click', index);
+			},
+			toDetail(item){
+				uni.navigateTo({
+					url:"../../subpkg/book-details/book-details?id=" + item.id
+				})
 			}
 		}
 	}

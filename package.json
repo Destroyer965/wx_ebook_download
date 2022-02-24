@@ -1,10 +1,17 @@
 {
-    "id": "dropdown-screen",
-    "name": "下拉筛选",
-    "version": "2.0.1",
-    "description": "下拉筛选",
+    "id": "muqian-lazyLoad",
+    "name": "高性能的图片懒加载组件",
+    "version": "1.0.2",
+    "description": "使用intersectionObserver API 实现的图片懒加载，比传统监听页面滚动性能好",
     "keywords": [
-        "下拉",
-        "筛选"
-    ]
+        "image",
+        "懒加载",
+        "lazy"
+    ],
+    "dcloudext": {
+        "category": [
+            "前端组件",
+            "通用组件"
+        ]
+    }
 }

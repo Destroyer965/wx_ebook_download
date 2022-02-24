@@ -32,8 +32,7 @@
 			"path": "book-details/book-details",
 			"style": {
 				"navigationBarTitleText": "书本详情",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#F1F1F2"
+				"enablePullDownRefresh": false
 
 			}
 		}, {
