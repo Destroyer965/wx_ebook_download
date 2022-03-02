@@ -46,7 +46,7 @@
 					<text class="item-text">收藏</text>
 				</view>
 				<view class="userinfo-item">
-					<text class="item-num">{{userinfo.length == 0 ? 0 : userinfo.points }}</text>
+					<text class="item-num">{{userinfo ? userinfo.points : 0 }}</text>
 					<text class="item-text">积分</text>
 				</view>
 			</view>
@@ -60,14 +60,14 @@
 				</view>
 				<uni-icons type="right"></uni-icons>
 			</navigator>
-			<view class="list-item">
+			<navigator url="../../subpkg/collection-records/collection-records" class="list-item">
 				<view class="list-item-text">
 					<text class="iconfont icon-shoucang"></text>
 
 					<text class="item-text">我的收藏</text>
 				</view>
 				<uni-icons type="right"></uni-icons>
-			</view>
+			</navigator>
 			<navigator url="../../subpkg/problem-feedback/problem-feedback" class="list-item">
 				<view class="list-item-text">
 					<text class="iconfont icon-wentifankui"></text>
@@ -186,10 +186,9 @@
 
 			// 获取用户信息
 			userInfo() {
-				console.log('刷新获取用户信息')
 				getUserInfo().then(res => {
-					// this.user = res
-					//将用户信息存储到vuex中
+					//将用户信息存储到Storage中
+					uni.setStorageSync('userinfo',res)
 					this.getUser(res)
 				})
 			},
@@ -200,17 +199,13 @@
 					title: '你确定要退出吗？',
 					itemList: ['退出登录'],
 					itemColor: '#FE2B2B',
-					success() {
+					success() { 
 						// 清除Storage
-						uni.removeStorage({
-							key: 'token',
-							success() {
-								console.log('success');
-							}
-						});
-						//清除vuex中的数据
+						uni.removeStorageSync('token')
+						uni.removeStorageSync('userinfo')
+						//清除vuex中的数据//
 						that.getUser(null)
-						uni.showToast({
+						uni.showToast({   
 							title: '退出成功',
 						})
 					}
@@ -219,7 +214,7 @@
 
 		},
 		onLoad() {
-			this.userInfo()
+			// this.userInfo()
 		},
 		computed: {
 			...mapState(['userinfo']),

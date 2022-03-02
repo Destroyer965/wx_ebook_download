@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<block v-for="(item,index) in bookClassifyInfo" :key="item.id">
-			<navigator class="card-item" url="#">
+			<view class="card-item" @click="toDetail(item.id)">
 				<lazyLoad  width="150rpx" height="150rpx" class="left-img" :src="item.imgUrl"></lazyLoad>
 				<view class="right-box">
 					<text class="item-title my-font-16">{{item.bookName}}</text>
@@ -10,7 +10,7 @@
 					</text>
 					<text class="item-publish my-font-14-gray">{{item.bookAuthor}}</text>
 				</view>
-			</navigator>
+			</view>
 		</block>
 	</view>
 </template>
@@ -30,6 +30,13 @@
 			return {
 				
 			};
+		},
+		methods:{
+			toDetail(param){
+				uni.navigateTo({
+					url:'../../subpkg/book-details/book-details?id=' + param
+				})
+			}
 		}
 	}
 </script>

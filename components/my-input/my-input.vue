@@ -1,7 +1,7 @@
 <template>
-	<view class="my-input">
+	<view class="my-input" @click.stop="myinput">
 		<view class="my-input-top">
-			<input :auto-focus="true" confirm-type="send"  v-model="inputValue" cursor-spacing="20" class="input"  placeholder="输入评论..." />
+			<input :auto-focus="true" confirm-type="send" maxlength="255"  v-model.trim="inputValue" cursor-spacing="20" class="input"  placeholder="输入评论..." />
 			<text  class="send" @click="send">发布</text>
 		</view>
 	</view>
@@ -17,6 +17,9 @@
 			
 		},
 		methods:{
+			myinput(){
+				this.$emit('myinput')
+			},
 			send(){
 				this.$emit('send',this.inputValue)
 			}
@@ -32,6 +35,7 @@
 		height: 70px;
 		padding: 10px 0;
 		background-color: #fff;
+		box-shadow: 11px 14px 17px 2px rgba(0,0,0,0.55);
 		.my-input-top {
 			display: flex;
 			justify-content: space-between;

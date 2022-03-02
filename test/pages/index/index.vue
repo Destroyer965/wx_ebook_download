@@ -1,7 +1,6 @@
 <template>
 	<view class="content">
-		<ren-dropdown-filter :filterData='filterData' :defaultIndex='defaultIndex' @ed='ed' @dateChange='dateChange'>
-		</ren-dropdown-filter>
+		<uni-dateformat date="2022-02-28T12:11:36" threshold="[60000, 3600000]"></uni-dateformat>
 	</view>
 </template>
 
@@ -9,47 +8,14 @@
 	export default {
 		data() {
 			return {
-				filterData: [
-					[{
-						text: '全部状态',
-						value: ''
-					}, {
-						text: '状态1',
-						value: 1
-					}, {
-						text: '状态2',
-						value: 2
-					}, {
-						text: '状态3',
-						value: 3
-					}],
-					[{
-						text: '全部类型',
-						value: ''
-					}, {
-						text: '类型1',
-						value: 1
-					}, {
-						text: '类型2',
-						value: 2
-					}, {
-						text: '类型3',
-						value: 3
-					}]
-				],
-				defaultIndex: [0, 0]
+			
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
-			dateChange(d){
-			               uni.showToast({
-			                   icon:'none',
-			                   title:d
-			               })
-			            }
+		
 		}
 	}
 </script>

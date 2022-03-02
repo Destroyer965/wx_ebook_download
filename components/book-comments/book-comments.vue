@@ -1,86 +1,121 @@
 <template>
-	<view class="comments">
+	<view class="comments" v-if="update">
 		<uni-card class="comments-card">
 			<view class="comments-top">
-				<view class="comments-number">评论&nbsp;<text>({{number}}条)</text></view>
+				<view class="comments-number">评论&nbsp;<text>({{comments.count}}条)</text></view>
 				<view class="comments-btn" @click.stop="writeComment">
 					<text class="icon"></text>
-					<text class="icon icon-bi" >写评论</text>
+					<text class="icon icon-bi">写评论</text>
 				</view>
 			</view>
-			<view class="comments-box">
-				<view class="comments-item" v-for="(item,index) of commentUserinfo" :key="item.id">
-					<view class="comments-item-top">
-						<image class="comment-useravatar" :src="item.useravatar">
-						</image>
-						<view class="comments-item-top-right">
-							<text class="comment-username my-font-size-22">{{item.username}}</text>
-							<text class="comments-time my-font-14-gray">{{item.userCommentsTime}}</text>
-						</view>
+			<view>
+				<view class="comments-box" v-if="comments.count>0">
+					<view class="comments-item" v-for="(item,index) of comments.data" :key="item.id">
+						<view class="comments-item-top">
+							<image class="comment-useravatar" :src="item.reviewer.avatar">
+							</image>
+							<view class="comments-item-top-right">
+								<text class="comment-username my-font-size-22">{{item.reviewer.username}}</text>
+								<uni-dateformat class="comments-time my-font-14-gray" :date="item.gmtCreat"
+									threshold="[60000, 3600000]"></uni-dateformat>
+							</view>
 
-					</view>
-					<view class="comments-item-content">
-						<text class="comment-usercontent my-font-16">{{item.userCommentsContent}}</text>
-					</view>
-					<view class="comments-item-bottom">
-						<view class="comments-item-bottom-right">
-							<view class="comment-thumbsup my-font-14-gray">
-								<uni-icons color="#C0C0C0" size=20 type="hand-up" @click="thumbsup"></uni-icons>
-								<text class="comment-num">{{item.userCommentNum}}</text>
-							</view>
-							<view class="comment-replay my-font-14-gray" @click="replay">
-								<uni-icons color="#C0C0C0" size=20 type="chatbubble"></uni-icons>
-								<text class="replay">回复</text>
+						</view>
+						<view class="comments-item-content">
+							<text class="comment-usercontent my-font-16">{{item.content}}</text>
+						</view>
+						<view class="comments-item-bottom">
+							<view class="comments-item-bottom-right">
+								<view class="comment-thumbsup my-font-14-gray"  @click="thumbsup(index,item.id)">
+									<uni-icons :color="item.isSelected?'red':'#C0C0C0'" size=20 type="hand-up">
+									</uni-icons>
+									<text class="comment-num">{{item.likeNum || 0}}</text>
+								</view>
+								<view class="comment-replay my-font-14-gray" @click.stop="replay(index,item.id)">
+									<uni-icons color="#C0C0C0" size=20 type="chatbubble"></uni-icons>
+									<text class="replay">回复</text>
+								</view>
 							</view>
 						</view>
-					</view>
-					<view class="comments-item-children" v-if="item.children">
-						<view class="children-item" v-for="(child,index) of item.children" :key="child.id">
-							<text class="reply-name">{{child.username}}</text>
-							<text>:</text>
-							<text class="reply-text">{{child.commnentText}}</text>
+						<view class="comments-item-children" v-if="item.subComments">
+							<view class="children-item" v-for="(child,index) of item.subComments" :key="child.id">
+								<text class="reply-name">{{child.reviewer.username}}</text>
+								<text>:</text>
+								<text class="reply-text">{{child.content}}</text>
+							</view>
 						</view>
 					</view>
 				</view>
+				<view v-else class="empty-comments">
+					<image src="https://wx-ebook-download.oss-cn-chengdu.aliyuncs.com/image/img_data_3x.jpg"></image>
+					<view>暂无评论</view>
+				</view>
 			</view>
+			<!-- 	<uni-load-more v-if="loadingShow" iconType="snow" :status="status" :contentText="contentText">
+			</uni-load-more> -->
 		</uni-card>
-	
+
 	</view>
 </template>
 
 <script>
 	export default {
 		props: {
-			'commentUserinfo': {
-				type: Array,
+			'comments': {
+				type: Object,
 				required: true,
-			}
+
+			},
+			'query': {
+				type: Object
+			},
+			'iconColor': {
+				type: String,
+				default: '#C0C0C0'
+			},
+
+
 		},
 		name: "book-comments",
 		data() {
 			return {
-				number: 0
+				status: 'loading',
+				loadingShow: true,
+				contentText: {
+					contentnomore: "没有更多数据了！🥲🥲🥲"
+				},
+				//强制刷新
+				update: true
 			};
 		},
 		methods: {
 			writeComment() {
 				this.$emit('writeComment')
 			},
-			thumbsup() {
-				console.log('点赞')
+			thumbsup(index,id) {
+				this.$emit('thumbsup',index,id)
+				this.comments.data[index].isSelected = !this.comments.data[index].isSelected
+				//对页面进行强制刷新
+				this.update = false
+				this.update = true
 			},
-			replay() {
+			replay(index,id) {
+				this.$emit('replay',index,id)
 				console.log('评论')
-			},
-			
-			
+			}
+		},
+		computed: {
+	
 		}
 	}
 </script>
 <style>
-	@import url("/static/fonts/iconfont.css");
 </style>
 <style lang="scss">
+	.isSelected {
+		color: red;
+	}
+
 	.comments {
 		width: 100%;
 
@@ -91,6 +126,17 @@
 			padding-bottom: 10px;
 			border-radius: 10rpx;
 			background-color: #fff;
+
+			.empty-comments {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+
+				image {
+					height: 200px;
+				}
+			}
 
 			.comments-top {
 				display: flex;
@@ -120,10 +166,15 @@
 			}
 
 			.comments-box {
+				height: 100%;
+				padding-bottom: 50px;
 
-				.comments-item{
+				.comments-item {
+					width: 95%;
+					margin: 0 auto;
 					margin-bottom: 15px;
 				}
+
 				.comments-item-top {
 					display: flex;
 					justify-content: flex-start;
@@ -133,8 +184,8 @@
 
 
 					image {
-						width: 100rpx;
-						height: 140rpx;
+						width: 85rpx;
+						height: 85rpx;
 						border-radius: 50%;
 						margin-right: 20rpx;
 					}
@@ -142,6 +193,7 @@
 					.comments-item-top-right {
 						@extend.align-center;
 						justify-content: center;
+						align-items: flex-start;
 						flex-direction: column;
 					}
 				}

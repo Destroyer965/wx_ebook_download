@@ -78,7 +78,25 @@
 				"navigationBarBackgroundColor":"#fff",
 				"navigationBarTextStyle":"black"
 			}
-		}]
+		}    ,{
+                    "path" : "collection-records/collection-records",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": true
+                }
+                
+                }
+                ,{
+                    "path" : "book-read/book-read",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "#fff",

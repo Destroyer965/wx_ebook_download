@@ -64,8 +64,6 @@
 			width: 95%;
 			height: 100%;
 			margin: 0 auto;
-
-
 			image {
 				width: 150rpx;
 				height: 190rpx;

@@ -115,7 +115,6 @@
 						this.status = 'no-more'
 						this.loadingShow = true
 					}
-
 					//将新数据与旧数据进行拼接
 					this.bookClassifyInfo = [...this.bookClassifyInfo, ...res.data]
 
@@ -130,7 +129,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.book-classify {
 		width: 100%;
 		margin-top: 44px;
