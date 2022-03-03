@@ -19,9 +19,9 @@ function service(options = {}) {
 				resolved(res.data.data);
 			} else {
 				uni.showToast({
-					icon: 'none',
+					icon: 'error',
 					duration: 3000,
-					title: `${res.data.message}`
+					title: `服务器异常，请联系管理员！`
 				});
 				rejected(res.data.msg); //错误
 			}

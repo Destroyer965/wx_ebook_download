@@ -96,7 +96,7 @@ export function addComment(data) {
 		method: 'POST',
 	})
 }
-//根据图书评论获取评论点赞总数
+//根据图书评论获取点赞总数
 export function likedCount(param) {
 	return request({
 		url: '/user/liked/count/'+param,
@@ -124,12 +124,19 @@ export function commentById(param) {
 		method: 'GET',
 	})
 }
-// 根据评论id查询评论信息
+// 根据评论id查询回复信息
 export function replayByParentId(data) {
 	return request({
 		url: '/book/comments/replay/',
 		method: 'POST',
 		data
+	})
+}
+// 根据评论id查询评论数量
+export function commentCountById(param) {
+	return request({
+		url: '/book/comment/count/'+param,
+		method: 'GET',
 	})
 }
 //下载

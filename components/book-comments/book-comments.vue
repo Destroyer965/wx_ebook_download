@@ -1,16 +1,16 @@
 <template>
-	<view class="comments" v-if="update">
+	<view class="comments">
 		<uni-card class="comments-card">
 			<view class="comments-top">
-				<view class="comments-number">评论&nbsp;<text>({{comments.count}}条)</text></view>
+				<view class="comments-number">评论&nbsp;<text>({{count}}条)</text></view>
 				<view class="comments-btn" @click.stop="writeComment">
 					<text class="icon"></text>
 					<text class="icon icon-bi">写评论</text>
 				</view>
 			</view>
 			<view>
-				<view class="comments-box" v-if="comments.count>0">
-					<view class="comments-item" v-for="(item,index) of comments.data" :key="item.id">
+				<view class="comments-box" v-if="!empty">
+					<view class="comments-item" v-for="(item,index) of comments" :key="item.id">
 						<view class="comments-item-top">
 							<image class="comment-useravatar" :src="item.reviewer.avatar">
 							</image>
@@ -26,7 +26,7 @@
 						</view>
 						<view class="comments-item-bottom">
 							<view class="comments-item-bottom-right">
-								<view class="comment-thumbsup my-font-14-gray"  @click="thumbsup(index,item.id)">
+								<view class="comment-thumbsup my-font-14-gray" @click="thumbsup(index,item.id)">
 									<uni-icons :color="item.isSelected?'red':'#C0C0C0'" size=20 type="hand-up">
 									</uni-icons>
 									<text class="comment-num">{{item.likeNum || 0}}</text>
@@ -38,23 +38,22 @@
 							</view>
 						</view>
 						<view class="comments-item-children" v-if="item.subComments">
-							<view class="children-item" v-for="(child,index) of item.subComments" :key="child.id">
+							<view class="children-item" v-for="(child,index) of item.subComments" :key="index">
 								<text class="reply-name">{{child.reviewer.username}}</text>
 								<text>:</text>
 								<text class="reply-text">{{child.content}}</text>
 							</view>
 						</view>
 					</view>
+					<slot name="loading"></slot>
 				</view>
-				<view v-else class="empty-comments">
+				<view v-else class="empty-comments" v-else>
 					<image src="https://wx-ebook-download.oss-cn-chengdu.aliyuncs.com/image/img_data_3x.jpg"></image>
 					<view>暂无评论</view>
 				</view>
 			</view>
-			<!-- 	<uni-load-more v-if="loadingShow" iconType="snow" :status="status" :contentText="contentText">
-			</uni-load-more> -->
-		</uni-card>
 
+		</uni-card>
 	</view>
 </template>
 
@@ -62,9 +61,20 @@
 	export default {
 		props: {
 			'comments': {
-				type: Object,
+				type: Array,
 				required: true,
 
+			},
+			'total':{
+				type:Number,
+				default:0
+			},
+			'count':{
+				type:Number,
+				default:0
+			},
+			'isempty':{
+				type:Boolean
 			},
 			'query': {
 				type: Object
@@ -78,35 +88,19 @@
 		},
 		name: "book-comments",
 		data() {
-			return {
-				status: 'loading',
-				loadingShow: true,
-				contentText: {
-					contentnomore: "没有更多数据了！🥲🥲🥲"
-				},
-				//强制刷新
-				update: true
-			};
+			return {};
 		},
 		methods: {
 			writeComment() {
 				this.$emit('writeComment')
 			},
-			thumbsup(index,id) {
-				this.$emit('thumbsup',index,id)
-				this.comments.data[index].isSelected = !this.comments.data[index].isSelected
-				//对页面进行强制刷新
-				this.update = false
-				this.update = true
+			thumbsup(index, id) {
+				this.$emit('thumbsup', index, id)
 			},
-			replay(index,id) {
-				this.$emit('replay',index,id)
-				console.log('评论')
+			replay(index, id) {
+				this.$emit('replay', index, id)
 			}
 		},
-		computed: {
-	
-		}
 	}
 </script>
 <style>
@@ -167,8 +161,14 @@
 
 			.comments-box {
 				height: 100%;
-				padding-bottom: 50px;
-
+				padding-bottom: 70px;
+				position: relative;
+				.loading {
+					position: absolute;
+					left: 0;
+					width: 100%;
+					bottom: 60px;
+				}
 				.comments-item {
 					width: 95%;
 					margin: 0 auto;
