@@ -9,7 +9,7 @@
 				</view>
 			</view>
 			<view>
-				<view class="comments-box" v-if="!empty">
+				<view class="comments-box" v-if="!isempty">
 					<view class="comments-item" v-for="(item,index) of comments" :key="item.id">
 						<view class="comments-item-top">
 							<image class="comment-useravatar" :src="item.reviewer.avatar">

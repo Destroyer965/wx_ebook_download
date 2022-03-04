@@ -1,7 +1,8 @@
 <template>
 	<view class="search-advice-list">
-		<view class="search-advice-item" v-for="(item,index) in searchContext" :key="index">
-			<text class="search-advice-item-text">{{item.title}}</text>
+		<view class="search-advice-item" v-for="(item,index) in searchContext" :key="index"
+		@click="toDetail(item.id)">
+			<text class="search-advice-item-text">{{item.bookName}}</text>
 			<uni-icons size="14" class="search-advice-item-icon" type="right"></uni-icons>
 		</view>
 		
@@ -20,7 +21,15 @@
 			return {
 
 			};
-		}
+		},
+		methods:{
+			toDetail(id){
+				this.$emit('addHistory',id)
+				uni.navigateTo({
+					url:'../../subpkg/book-details/book-details?id='+id
+				})
+			}
+		},
 	}
 </script>
 

@@ -2,12 +2,18 @@
 	<view class="book-search">
 		<!-- 搜索框 -->
 		<view class="search-box">
-			<uni-easyinput confirm-type="search" :value="inputValue" :focus=true 	@input="inputValueHandler"
+			<uni-easyinput confirm-type="search" v-model="inputValue" trim="all" :focus=true @input="inputValueHandler"
 				class="search-input" :inputBorder=false placeholder="请输入你要搜索的书名" prefixIcon="search" clearSize=18>
 			</uni-easyinput>
 		</view>
 		<!-- 搜索建议列表 -->
-		<seach-advice-list v-if="isInput" :searchContext="searchContext"></seach-advice-list>
+		<seach-advice-list v-if="searchContext" @addHistory="addHistory" :searchContext="searchContext">
+		</seach-advice-list>
+		<empty-result v-if="searchContext.length===0">
+			<template v-slot:tips>
+				<view class="tips">暂无搜索内容～</view>
+			</template>
+		</empty-result>
 		<view class="search-content" v-else>
 			<view class="search-other" v-if="searchHistory.length > 0">
 				<view class="search-title">
@@ -16,9 +22,8 @@
 				</view>
 				<view class="search-content">
 					<block v-for="(item,index) in searchHistory" :key="index">
-						<text class="search-item">{{item}}</text>
+						<text class="search-item" @click="toDetail(item.id)">{{item.bookName}}</text>
 					</block>
-
 				</view>
 			</view>
 			<view class="search-other">
@@ -27,9 +32,9 @@
 				</view>
 				<view class="search-rank" v-for="item in searchRank" :key="item.id">
 
-					<text v-if="item.rank === 1" class="t-icon t-icon-redu11"></text>
-					<text v-else-if="item.rank === 2" class="t-icon t-icon-redu1"></text>
-					<text v-else-if="item.rank === 3" class="t-icon t-icon-redu2"></text>
+					<text v-if="item.rank === 1" class="t-icon t-icon-redu1"></text>
+					<text v-else-if="item.rank === 2" class="t-icon t-icon-redu2"></text>
+					<text v-else-if="item.rank === 3" class="t-icon t-icon-redu3"></text>
 					<text v-else class="search-rank-num">{{item.rank}}</text>
 					<text class="search-rank-text">{{item.bookName}}</text>
 				</view>
@@ -40,6 +45,12 @@
 </template>
 
 <script>
+	import {
+		fuzzyQueryBook,
+		addSearchHistory,
+		delSearchHistory,
+		querySearchHistory
+	} from '../../utils/api.js'
 	export default {
 		data() {
 			return {
@@ -47,10 +58,7 @@
 				timer: null,
 				inputValue: '',
 				isInput: false,
-				searchHistory: [
-					'Java权威指南',
-					'计算机网路'
-				],
+				searchHistory: null,
 				// 排行榜
 				searchRank: [{
 						id: 1,
@@ -73,70 +81,57 @@
 					},
 				],
 				// 搜索建议列表
-				searchContext: [{
-					id: 1,
-					title: 'Java核心技术卷I',
-					url: ''
-				}, {
-					id: 2,
-					title: 'Java核心技术卷II',
-					url: ''
-				}, {
-					id: 3,
-					title: 'Java核心技术卷I',
-					url: ''
-				}]
+				searchContext: null
 			};
 		},
 
 		methods: {
+			async addHistory(id) {
+				await addSearchHistory(id);
+				this.queryHistory()
+			},
+			async queryHistory() {
+				let res = await querySearchHistory();
+				console.log(res)
+				this.searchHistory = res
+			},
 			// 删除历史记录
 			deleteHistory() {
 				this.show = true;
 				uni.showModal({
 					title: '提示',
 					content: '你确定要删除所有历史记录吗?',
-					success: res => {
+					success: (res) => {
 						if (res.confirm) {
-							this.searchHistory = [];
+							delSearchHistory()
+							this.queryHistory()
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
 					}
 				});
+
 			},
-			inputValueHandler(e) {
-				// 对输入框进行防抖处理
-				// clearTimeout();
-				// this.timer = setTimeout(() => {
-				// 	this.inputValue = e.detail.value
-				// }, 500);
-				
-				this.inputValue = e
-				if (this.inputValue.trim().length != 0) {
-					this.isInput = true
-				} else {
-					this.isInput = false
+			async inputValueHandler() {
+				if (!this.inputValue) {
+					this.searchContext = null
+					return;
 				}
+				let res = await fuzzyQueryBook(this.inputValue);
+				console.log(res)
+				this.searchContext = res
 			},
+			toDetail(id) {
 
-			// 搜索
-			search() {
-
-				if (this.inputValue.trim().length != 0) {
-					var set = new Set();
-					set.add(this.inputValue);
-					this.searchHistory.forEach(item => {
-						set.add(item)
-					})
-
-					this.searchHistory = [...set]
-				}
-				this.inputValue = ''
-			},
-
+				uni.navigateTo({
+					url: '../../subpkg/book-details/book-details?id=' + id
+				})
+			}
 
 		},
+		onLoad() {
+			this.queryHistory();
+		}
 	}
 </script>
 

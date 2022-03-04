@@ -88,7 +88,7 @@
 				parentid: 0,
 				loadingShow: false,
 				flag: false,
-				isPull:false,
+				isPull: false,
 				status: 'loading',
 				isemty: false,
 				contentText: {
@@ -118,14 +118,14 @@
 		},
 		async onLoad(option) {
 			uni.getSavedFileList({
-			    success: function (res) {
-			        if (res.fileList.length > 0) {
-				    // 删除本地存储的文件
-				    uni.removeSavedFile({
-					filePath: res.fileList[0].filePath
-				    });
-			        }
-			    }
+				success: function(res) {
+					if (res.fileList.length > 0) {
+						// 删除本地存储的文件
+						uni.removeSavedFile({
+							filePath: res.fileList[0].filePath
+						});
+					}
+				}
 			});
 			this.bookid = option.id
 			uni.setNavigationBarColor({
@@ -136,9 +136,10 @@
 			this.isCollection(this.bookid);
 			await this.commentList(this.query);
 			this.getLikedCount(this.comments)
+
 		},
 		onReachBottom() {
-			this.isPull =true
+			this.isPull = true
 			let pageNo = this.query.pageNo;
 			let pageSize = this.query.pageSize;
 			if (pageNo * pageSize >= this.total) {
@@ -264,6 +265,8 @@
 			},
 			//判断用户是否收藏该图书
 			async isCollection(bookid) {
+				//未登录
+				if (!this.userinfo) return;
 				let res = await getCollectionByUserAndBookID(bookid);
 				if (res) {
 					this.options = [{
@@ -275,6 +278,19 @@
 				}
 			},
 			readOnline() {
+				//未登录
+				if(!this.userinfo){
+					
+					uni.switchTab({
+						url:'../../pages/person/person'
+					})
+					uni.showToast({
+						icon:'error',
+						title:'请登录！',
+						duration:2000
+					})
+					return;
+				}
 				let webUrl =
 					'https://yangjiahai.oss-accelerate.aliyuncs.com/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E3%80%8B%E6%95%99%E7%A8%8Bc%E8%AF%AD%E8%A8%80%E7%89%88.pdf'
 				console.log("在线阅读")
@@ -298,9 +314,22 @@
 						break;
 				}
 			},
-			
+
 			//下载
 			download() {
+				//未登录
+				if(!this.userinfo){
+					
+					uni.switchTab({
+						url:'../../pages/person/person'
+					})
+					uni.showToast({
+						icon:'error',
+						title:'请登录！',
+						duration:2000
+					})
+					return;
+				}
 				uni.showLoading({
 					title: '正在下载'
 				})
@@ -356,7 +385,10 @@
 				this.flag = false
 				this.total = res.total
 				this.count = res.count
+				this.isemty = false;
 				for (let comment of res.data) {
+					//判断用户是否登录
+					if (!this.userinfo) break;
 					//判断用户是否对评论点赞
 					let isliked = await isLiked(comment.id);
 					if (isliked) {
@@ -371,8 +403,16 @@
 					this.loadingShow = true;
 					this.status = 'no-more'
 				}
-				this.isPull?this.comments = [...this.comments, ...res.data]:this.comments = res.data
+				if (this.total === 0) {
+					this.isemty = true;
+					this.loadingShow = false;
+				}
+				
+				this.isPull ? this.comments = [...this.comments, ...res.data] : this.comments = res.data
 				// this.comments = [...this.comments, ...res.data]
+				for(let item of this.comments){
+					this.getCommentCountById(item.id)
+				}
 				
 			},
 			//用户点赞取消点赞	
@@ -404,6 +444,7 @@
 			},
 			//根据评论获取点赞总数
 			async getLikedCount(param) {
+				if (!this.userinfo) return;
 				for (let item of param) {
 					let res = await likedCount(item.id)
 					item.likeNum = res
@@ -431,8 +472,6 @@
 		overflow: unset !important;
 		height: auto !important;
 	}
-
-
 
 	.detail {
 		background-color: $my-bg-color;

@@ -111,6 +111,7 @@
 <script>
 	import {
 		login,
+		logout,
 		getUserInfo
 	} from "../../utils/api.js"
 	import {
@@ -123,6 +124,7 @@
 				downloadNum: 0,
 				collectionNum: 0,
 				integral: 0,
+
 			}
 		},
 		methods: {
@@ -188,24 +190,25 @@
 			userInfo() {
 				getUserInfo().then(res => {
 					//将用户信息存储到Storage中
-					uni.setStorageSync('userinfo',res)
+					uni.setStorageSync('userinfo', res)
 					this.getUser(res)
 				})
 			},
 			// 退出登录
-			logout() {
+			 logout() {
 				let that = this
 				uni.showActionSheet({
 					title: '你确定要退出吗？',
 					itemList: ['退出登录'],
 					itemColor: '#FE2B2B',
-					success() { 
+				async success() {
+						await logout()
 						// 清除Storage
 						uni.removeStorageSync('token')
 						uni.removeStorageSync('userinfo')
 						//清除vuex中的数据//
 						that.getUser(null)
-						uni.showToast({   
+						uni.showToast({
 							title: '退出成功',
 						})
 					}

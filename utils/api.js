@@ -7,6 +7,13 @@ export function login(data) {
 		data
 	})
 }
+//登录
+export function logout() {
+	return request({
+		url: '/auth/logout',
+		method: 'DELETE',
+	})
+}
 // 获取用户信息
 export function getUserInfo() {
 	return request({
@@ -142,7 +149,36 @@ export function commentCountById(param) {
 //下载
 export function download(param){
 	return request({
-		url: '/book//download/'+param,
+		url: '/book/download/'+param,
+		method: 'GET',
+	})
+}
+//模糊查询图书
+export function fuzzyQueryBook(param){
+	return request({
+		url: '/book/search/'+param,
+		method: 'GET',
+	})
+}
+//添加收藏记录
+export function addSearchHistory(param){
+	return request({
+		url: '/book/search/'+param,
+		method: 'POST',
+	})
+}
+//删除收藏记录
+export function delSearchHistory(){
+	return request({
+		url: '/book/search',
+		method: 'DELETE',
+	})
+}
+
+//删除收藏记录
+export function querySearchHistory(){
+	return request({
+		url: '/book/query/search',
 		method: 'GET',
 	})
 }

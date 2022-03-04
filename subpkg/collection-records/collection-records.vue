@@ -1,11 +1,11 @@
 <template>
 	<view class="collection-records">
 		<view v-if="!isempty">
-			<uni-swipe-action >
+			<uni-swipe-action>
 				<block v-for="(item,index) in collectionList" :key="index">
 					<block v-for="child in item.children" :key="child.id">
 						<uni-swipe-action-item class="action-item" :right-options="options"
-							@click="bindClick($event,item.bookid)" >
+							@click="bindClick($event,item.bookid)">
 							<view class="action-content" @click="toDetail(item.bookid)">
 								<image class="left-img" :src="child.imgUrl">
 								</image>
@@ -68,9 +68,10 @@
 		},
 
 		methods: {
-			bindClick(e, id) {
+			async bindClick(e, id) {
 				if (e.index === 1) {
-					delCollection(id)
+					await delCollection(id)
+					let res = await getCollectionById(this.param);
 					uni.showToast({
 						title: "删除成功",
 						duration: 2000
@@ -81,22 +82,22 @@
 				}
 			},
 			//获取用户收藏记录
-			getCollectionRecords() {
+			async getCollectionRecords() {
 				this.flag = true;
-				getCollectionById(this.param).then(res => {
-					if (res.data.length === 0) {
-						this.isempty = true
-					}
-					let query = this.param;
-					this.total = res.total;
-					if (query.pageNo * query.pageSize >= this.total) {
-						this.status = 'no-more'
-						this.loadingShow = true
-					}
-					this.collectionList = [...this.collectionList, ...res.data]
-					//数据请求完毕关闭节流阀
-					this.flag = false
-				})
+				let res = await getCollectionById(this.param);
+				if (res.data.length === 0) {
+					this.isempty = true
+				}
+				let query = this.param;
+				this.total = res.total;
+				if (query.pageNo * query.pageSize >= this.total) {
+					this.status = 'no-more'
+					this.loadingShow = true
+				}
+				
+				this.collectionList = [...this.collectionList, ...res.data]
+				//数据请求完毕关闭节流阀
+				this.flag = false
 			},
 			//跳转图书详情
 			toDetail(bookid) {
@@ -115,7 +116,6 @@
 		//上拉加载更多
 		onReachBottom() {
 			let query = this.param;
-			
 			//数据全部请求完毕
 			if (query.pageSize * query.pageNo >= this.total) {
 				this.status = 'no-more'
@@ -128,7 +128,7 @@
 			this.param.pageNo++
 			this.getCollectionRecords()
 		},
-		onPullDownRefresh(){
+		onPullDownRefresh() {
 			let query = this.param;
 			query.pageNo = 1;
 			getCollectionById(query).then(res => {

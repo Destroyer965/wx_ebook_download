@@ -17,11 +17,12 @@ function service(options = {}) {
 		options.success = (res) => {
 			if (Number(res.data.code) == 20000) { //请求成功
 				resolved(res.data.data);
-			} else {
+			} 
+			else {
 				uni.showToast({
 					icon: 'error',
 					duration: 3000,
-					title: `服务器异常，请联系管理员！`
+					title: `${res.data.message}`
 				});
 				rejected(res.data.msg); //错误
 			}
