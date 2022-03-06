@@ -20,7 +20,8 @@
 
 <script>
 	import {
-		getBookByCategoryId
+		getBookByCategoryId,
+		queryBookByCondition
 	} from '../../utils/api.js'
 
 	export default {
@@ -60,7 +61,7 @@
 				total: 0,
 				status: 'loading',
 				loadingShow: false,
-				isempty:false,
+				isempty: false,
 				contentText: {
 					contentnomore: "没有更多数据了！😄😄😄"
 				}
@@ -68,7 +69,7 @@
 		},
 		onLoad(option) {
 			this.queryParam.categoryId = option.id
-			uni.setNavigationBarTitle({   ///
+			uni.setNavigationBarTitle({
 				title: option.categoryname,
 			})
 			this.getBookByCategory();
@@ -92,18 +93,12 @@
 		onPullDownRefresh() {
 			// uni.startPullDownRefresh()
 			console.log("下拉")
-			// this.queryParam.pageNo = 1;
-			// this.queryParam.total = 0
-			// this.flag = false
-			// this.bookClassifyInfo = []
-			// this.getBookByCategory();
-			// uni.stopPullDownRefresh()
 		},
 		methods: {
 			//按照图书分类id分页查询图书
 			getBookByCategory() {
 				getBookByCategoryId(this.queryParam).then(res => {
-					if(res.data.length===0){
+					if (res.data.length === 0) {
 						this.isempty = true
 					}
 					//打开节流阀
@@ -122,8 +117,40 @@
 					this.flag = false
 				})
 			},
-			finish(e) {
-				console.log(e)
+			async finish(e) {
+				let param = {
+					id: this.queryParam.categoryId,
+					name: '',
+					sort: true,
+				}
+				switch (e.vallue) {
+					case 1:
+						param.name = 'recommendation_index'
+						param.sort = true
+						break;
+					case 2:
+						param.name = 'recommendation_index'
+						param.sort = false
+						break;
+					case 3:
+						param.name = 'download_count'
+						param.sort = true
+						break;
+					case 4:
+						param.name = 'download_count'
+						param.sort = false
+						break;
+					case 5:
+						param.name = 'collection_count'
+						param.sort = true
+						break;
+					case 6:
+						param.name = 'collection_count'
+						param.sort = false
+						break;
+				}
+				let res = await queryBookByCondition(param)
+				this.bookClassifyInfo = res
 			}
 		}
 	}
@@ -145,7 +172,8 @@
 			width: 100%;
 			z-index: 999;
 		}
-		.empty-result{
+
+		.empty-result {
 			// display: flex;
 		}
 	}

@@ -5,7 +5,7 @@
 				<block v-for="(item,index) in collectionList" :key="index">
 					<block v-for="child in item.children" :key="child.id">
 						<uni-swipe-action-item class="action-item" :right-options="options"
-							@click="bindClick($event,item.bookid)">
+							@click="bindClick($event,index,item.bookid)">
 							<view class="action-content" @click="toDetail(item.bookid)">
 								<image class="left-img" :src="child.imgUrl">
 								</image>
@@ -58,7 +58,7 @@
 				total: 0,
 				flag: false,
 				status: 'loading',
-				loadingShow: true,
+				loadingShow: false,
 				isempty: false,
 				collectionList: [],
 				contentText: {
@@ -68,16 +68,18 @@
 		},
 
 		methods: {
-			async bindClick(e, id) {
+			async bindClick(e, index, id) {
 				if (e.index === 1) {
 					await delCollection(id)
-					let res = await getCollectionById(this.param);
+					uni.showLoading({
+						title: '正在删除'
+					})
+					//删除元素
+					this.collectionList.splice(index, 1)
+					uni.hideLoading()
 					uni.showToast({
 						title: "删除成功",
 						duration: 2000
-					})
-					uni.redirectTo({
-						url:'/subpkg/collection-records/collection-records'
 					})
 				}
 			},
@@ -94,7 +96,6 @@
 					this.status = 'no-more'
 					this.loadingShow = true
 				}
-				
 				this.collectionList = [...this.collectionList, ...res.data]
 				//数据请求完毕关闭节流阀
 				this.flag = false
@@ -128,11 +129,15 @@
 			this.param.pageNo++
 			this.getCollectionRecords()
 		},
+		//下拉刷新
 		onPullDownRefresh() {
-			let query = this.param;
-			query.pageNo = 1;
+			this.param.pageNo = 1;
+			let query = this.param
+			this.collectionList = []
+			this.loadingShow=false
 			getCollectionById(query).then(res => {
 				this.collectionList = res.data
+				this.total = res.total
 			})
 			uni.stopPullDownRefresh()
 		}

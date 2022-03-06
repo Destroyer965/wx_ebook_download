@@ -30,8 +30,8 @@ function service(options = {}) {
 		}
 		//错误
 		options.fail = (err) => {
-			uni.showToast({
-				title: '服务器出错，请联系管理员😄'
+			uni.navigateTo({
+				url:'/subpkg/error/error.vue'
 			})
 			rejected(err); //错误
 		}

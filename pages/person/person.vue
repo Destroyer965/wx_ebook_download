@@ -38,11 +38,11 @@
 			</view>
 			<view class="userinfo-bottom">
 				<view class="userinfo-item">
-					<text class="item-num">{{downloadNum}}</text>
+					<text class="item-num">{{downloadCount}}</text>
 					<text class="item-text">下载</text>
 				</view>
 				<view class="userinfo-item">
-					<text class="item-num">{{collectionNum}}</text>
+					<text class="item-num">{{collectionCount}}</text>
 					<text class="item-text">收藏</text>
 				</view>
 				<view class="userinfo-item">
@@ -54,7 +54,7 @@
 		<view class="person-list">
 			<navigator url="../../subpkg/download-history/download-history" class="list-item">
 				<view class="list-item-text">
-					<text class="iconfont icon-xiazaijilu"></text>
+					<text class="iconfont icon-yunduanxiazai"></text>
 
 					<text class="item-text">下载记录</text>
 				</view>
@@ -62,7 +62,7 @@
 			</navigator>
 			<navigator url="../../subpkg/collection-records/collection-records" class="list-item">
 				<view class="list-item-text">
-					<text class="iconfont icon-shoucang"></text>
+					<text class="iconfont icon-shoucang1"></text>
 
 					<text class="item-text">我的收藏</text>
 				</view>
@@ -112,7 +112,9 @@
 	import {
 		login,
 		logout,
-		getUserInfo
+		getUserInfo,
+		queryDownloadHistory,
+		getCollectionById,
 	} from "../../utils/api.js"
 	import {
 		mapState,
@@ -121,9 +123,13 @@
 	export default {
 		data() {
 			return {
-				downloadNum: 0,
-				collectionNum: 0,
 				integral: 0,
+				query: {
+					pageNo: 1,
+					pageSize: 1
+				},
+				downloadCount: 0,
+				collectionCount: 0
 
 			}
 		},
@@ -195,13 +201,13 @@
 				})
 			},
 			// 退出登录
-			 logout() {
+			logout() {
 				let that = this
 				uni.showActionSheet({
 					title: '你确定要退出吗？',
 					itemList: ['退出登录'],
 					itemColor: '#FE2B2B',
-				async success() {
+					async success() {
 						await logout()
 						// 清除Storage
 						uni.removeStorageSync('token')
@@ -214,10 +220,19 @@
 					}
 				})
 			},
+			async getDownloadHistory() {
+				let res = await queryDownloadHistory(this.query);
+				this.downloadCount = res.total
+			},
+			async getCollection() {
+				let res = await getCollectionById(this.query);
+				this.collectionCount = res.total
+			}
 
 		},
 		onLoad() {
-			// this.userInfo()
+			this.getDownloadHistory()
+			this.getCollection()
 		},
 		computed: {
 			...mapState(['userinfo']),

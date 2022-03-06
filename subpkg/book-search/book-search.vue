@@ -14,7 +14,7 @@
 				<view class="tips">暂无搜索内容～</view>
 			</template>
 		</empty-result>
-		<view class="search-content" v-else>
+		<view class="search-content" v-if="!searchContext">
 			<view class="search-other" v-if="searchHistory.length > 0">
 				<view class="search-title">
 					<text class="search-text">历史搜索</text>
@@ -30,13 +30,17 @@
 				<view class="search-title">
 					<text class="search-text">热门搜索</text>
 				</view>
-				<view class="search-rank" v-for="item in searchRank" :key="item.id">
-
-					<text v-if="item.rank === 1" class="t-icon t-icon-redu1"></text>
-					<text v-else-if="item.rank === 2" class="t-icon t-icon-redu2"></text>
-					<text v-else-if="item.rank === 3" class="t-icon t-icon-redu3"></text>
-					<text v-else class="search-rank-num">{{item.rank}}</text>
-					<text class="search-rank-text">{{item.bookName}}</text>
+				<view class="search-rank" v-for="(item,index) in bookList" :key="item.id">
+					<view>
+						<text v-if="index === 0" class="t-icon t-icon-redu1"></text>
+						<text v-else-if="index === 1" class="t-icon t-icon-redu2"></text>
+						<text v-else-if="index=== 2" class="t-icon t-icon-redu3"></text>
+						<text v-else class="search-rank-num">{{index+1}}</text>
+						<text class="search-rank-text">{{item.bookName}}</text>
+					</view>
+					<view class="search-num">
+						<text>{{item.searchCount}}热度</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -49,8 +53,14 @@
 		fuzzyQueryBook,
 		addSearchHistory,
 		delSearchHistory,
-		querySearchHistory
+		querySearchHistory,
+		querySearchrank,
+		getBookById
+
 	} from '../../utils/api.js'
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -58,42 +68,30 @@
 				timer: null,
 				inputValue: '',
 				isInput: false,
-				searchHistory: null,
+				searchHistory: [],
+				bookList: [],
 				// 排行榜
-				searchRank: [{
-						id: 1,
-						rank: 1,
-						bookName: 'Java编程思想'
-					}, {
-						id: 2,
-						rank: 2,
-						bookName: 'Java核心技术卷I'
-					},
-					{
-						id: 3,
-						rank: 3,
-						bookName: '算法导论'
-					},
-					{
-						id: 4,
-						rank: 4,
-						bookName: '计算机网络'
-					},
-				],
+				searchRank: null,
 				// 搜索建议列表
-				searchContext: null
+				searchContext: null,
 			};
 		},
 
 		methods: {
-			async addHistory(id) {
-				await addSearchHistory(id);
+			addHistory(id) {
+				let searchArr = uni.getStorageSync('searchList') || [];
+				searchArr.unshift(id)
+				uni.setStorageSync("searchList", searchArr)
+				this.searchHistory = []
 				this.queryHistory()
 			},
 			async queryHistory() {
-				let res = await querySearchHistory();
-				console.log(res)
-				this.searchHistory = res
+				let bookKey = uni.getStorageSync('searchList') || []
+				let newBookKey = Array.from(new Set(bookKey))
+				for (let id of newBookKey) {
+					let res = await getBookById(id)
+					this.searchHistory.push(res)
+				}
 			},
 			// 删除历史记录
 			deleteHistory() {
@@ -103,8 +101,8 @@
 					content: '你确定要删除所有历史记录吗?',
 					success: (res) => {
 						if (res.confirm) {
-							delSearchHistory()
-							this.queryHistory()
+							uni.removeStorageSync("searchList")
+							this.searchHistory=[]
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
@@ -118,19 +116,29 @@
 					return;
 				}
 				let res = await fuzzyQueryBook(this.inputValue);
-				console.log(res)
 				this.searchContext = res
 			},
 			toDetail(id) {
-
 				uni.navigateTo({
 					url: '../../subpkg/book-details/book-details?id=' + id
 				})
+			},
+			async querySearchrank() {
+				let res = await querySearchrank()
+				for (let item of res) {
+					let book = await getBookById(item.book_id);
+					book.searchCount = item.search_count
+					this.bookList.push(book)
+				}
 			}
 
 		},
 		onLoad() {
 			this.queryHistory();
+			this.querySearchrank();
+		},
+		computed: {
+			...mapState(['userinfo'])
 		}
 	}
 </script>
@@ -198,6 +206,9 @@
 				.search-rank {
 					width: 100%;
 					padding: 10rpx 0;
+					display: flex;
+					justify-content: space-between;
+					font-size: 28rpx;
 
 					.search-rank-num {
 						font-size: 32rpx;
@@ -206,6 +217,11 @@
 
 					.search-rank-text {
 						margin-left: 20rpx;
+						color: #6A6E76;
+					}
+
+					.search-num {
+						color: #AEB1BA;
 					}
 				}
 			}

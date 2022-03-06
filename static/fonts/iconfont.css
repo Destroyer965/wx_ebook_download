@@ -11,6 +11,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-shoucang1:before {
+  content: "\e604";
+}
+
+.icon-yunduanxiazai:before {
+  content: "\ec1d";
+}
+
 .icon-Lv60:before {
   content: "\e605";
 }

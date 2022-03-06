@@ -1,32 +1,40 @@
 <template>
 	<view>
-		<uni-swipe-action v-if="historyList.length > 0">
-			<block v-for="(item,index) in historyList" :key="item.id">
-				<uni-swipe-action-item class="action-item" :right-options="options" @click="bindClick($event,index)"
-					@change="swipeChange($event, item.id)">
-					<view class="action-content">
-						<image class="left-img" :src="item.bookImg">
-						</image>
-						<view class="right-box">
-							<text class="item-title my-font-16">{{item.bookName}}</text>
-							<text class="item-content my-font-14-gray">
-								{{item.bookIntruduction}}
-							</text>
-							<text class="item-publish my-font-14-gray">{{item.historyTime}}</text>
+		<uni-swipe-action v-if="!isempty">
+			<block v-for="(item,index) in historyList" :key="index">
+				<block v-for="child in item.children" :key="child.id">
+					<uni-swipe-action-item class="action-item" :right-options="options" @click="bindClick($event,child.id,index)">
+						<view class="action-content">
+							<image class="left-img" :src="child.imgUrl">
+							</image>
+							<view class="right-box">
+								<text class="item-title my-font-16">{{child.bookName}}</text>
+								<text class="item-content my-font-14-gray">
+									{{child.bookIntrduction}}
+								</text>
+								<text class="item-publish my-font-14-gray">{{item.gmtCreat}}</text>
+							</view>
 						</view>
-					</view>
-				</uni-swipe-action-item>
+					</uni-swipe-action-item>
+				</block>
 			</block>
+			<uni-load-more v-if="loadingShow" iconType="snow" :status="status" :contentText="contentText">
+			</uni-load-more>
 		</uni-swipe-action>
 		<empty-result v-else style="height: 100%;">
 			<template v-slot:tips>
 				<view class="tips">你暂时还没有下载历史哦～</view>
 			</template>
 		</empty-result>
+
 	</view>
 </template>
 
 <script>
+	import {
+		queryDownloadHistory,
+		delDownloadHistory,
+	} from '../../utils/api.js'
 	export default {
 		data() {
 			return {
@@ -41,55 +49,88 @@
 						backgroundColor: '#ff2b2b'
 					}
 				}],
-				historyList: [{
-						id: 1,
-						bookImg: 'https://img13.360buyimg.com/n1/jfs/t1/92329/23/8897/158518/5e09abdcE2cd17eb5/056bbe9e4803be8d.jpg',
-						bookName: '1Java核心技术卷I',
-						bookIntruduction: '本书由拥有20多年教学与研究经验的资深Java技术专家撰写（获Jolt大奖），是程序员的优选Java指南。本版针对Java SE 9、10和 11全面更新。【卷1共12章】 第1章概述Java语言的特色功能； 第2章详细论述如何下载和安装JDK以及本书的程序示例； 第3章开始讨论Java 语言，包括变量、循环和简单的函数；',
-						historyTime: '2022-0125'
-					}, {
-						id: 2,
-						bookImg: 'https://img13.360buyimg.com/n1/jfs/t1/92329/23/8897/158518/5e09abdcE2cd17eb5/056bbe9e4803be8d.jpg',
-						bookName: '2Java核心技术卷I',
-						bookIntruduction: '本书由拥有20多年教学与研究经验的资深Java技术专家撰写（获Jolt大奖），是程序员的优选Java指南。本版针对Java SE 9、10和 11全面更新。【卷1共12章】 第1章概述Java语言的特色功能； 第2章详细论述如何下载和安装JDK以及本书的程序示例； 第3章开始讨论Java 语言，包括变量、循环和简单的函数；',
-						historyTime: '2022-0125'
-					},
-					{
-						id: 3,
-						bookImg: 'https://img13.360buyimg.com/n1/jfs/t1/92329/23/8897/158518/5e09abdcE2cd17eb5/056bbe9e4803be8d.jpg',
-						bookName: '3Java核心技术卷I',
-						bookIntruduction: '本书由拥有20多年教学与研究经验的资深Java技术专家撰写（获Jolt大奖），是程序员的优选Java指南。本版针对Java SE 9、10和 11全面更新。【卷1共12章】 第1章概述Java语言的特色功能； 第2章详细论述如何下载和安装JDK以及本书的程序示例； 第3章开始讨论Java 语言，包括变量、循环和简单的函数；',
-						historyTime: '2022-0125'
-					},
-					{
-						id: 4,
-						bookImg: 'https://img13.360buyimg.com/n1/jfs/t1/92329/23/8897/158518/5e09abdcE2cd17eb5/056bbe9e4803be8d.jpg',
-						bookName: '3Java核心技术卷I',
-						bookIntruduction: '本书由拥有20多年教学与研究经验的资深Java技术专家撰写（获Jolt大奖），是程序员的优选Java指南。本版针对Java SE 9、10和 11全面更新。【卷1共12章】 第1章概述Java语言的特色功能； 第2章详细论述如何下载和安装JDK以及本书的程序示例； 第3章开始讨论Java 语言，包括变量、循环和简单的函数；',
-						historyTime: '2022-0125'
-					}
-				]
+				total: 0,
+				query: {
+					pageNo: 1,
+					pageSize: 7
+				},
+				isempty: false,
+				flag: false,
+				status: 'loading',
+				loadingShow: false,
+				contentText: {
+					contentnomore: "没有更多数据了！🥲🥲🥲"
+				},
+				historyList: []
 			};
 		},
 		methods: {
-			bindClick(e, id) {
+			async bindClick(e, id,index) {
 				if (e.index === 1) {
-					this.historyList.splice(id, 1)
-					uni.showToast({
-						title:"删除成功",
-						duration:2000
-					})
+					console.log(id)
+					let res = await delDownloadHistory(id)
+					//删除元素
+					this.historyList.splice(index, 1)
+					if (res) {
+						uni.showToast({
+							title: "删除成功",
+							duration: 2000
+						})
+					}
 				}
 			},
-			swipeChange(e, index) {
-				// console.log('当前状态：' + e + '，下标：' + index)
-			}
+			//获取下载记录
+			async getDownloadHistory() {
+				//开启节流阀
+				this.flag = true;
+				let res = await queryDownloadHistory(this.query);
+				//数据请求完毕关闭节流阀
+				this.flag = false
+				//无数据
+				if (res.data.length === 0) {
+					this.isempty = true
+				}
+				//记录总数
+				this.total = res.total
+				// 数据请求完毕
+				if (this.query.pageNo * this.query.pageSize >= this.total) {
+					this.status = 'no-more';
+					this.loadingShow = true;
+				}
+				this.historyList = [...this.historyList, ...res.data];
+			},
 		},
-		onLoad() {
+		 onLoad() {
 			uni.setNavigationBarTitle({
 				title: '历史下载'
 			});
-
+			 this.getDownloadHistory();
+		},
+		onReachBottom() {
+			//数据全部请求完毕
+			if (this.query.pageSize * this.query.pageNo >= this.total) {
+				this.status = 'no-more'
+				return;
+			}
+			this.loadingShow = true
+			if (this.flag) {
+				return;
+			}
+			this.loadingShow
+			this.query.pageNo++;
+			this.getDownloadHistory()
+		},
+		//下拉刷新
+		onPullDownRefresh() {
+			this.query.pageNo = 1;
+			let query = this.query
+			this.historyList = []
+			this.loadingShow=false
+			queryDownloadHistory(query).then(res => {
+				this.historyList = res.data
+				this.total = res.total
+			})
+			uni.stopPullDownRefresh()
 		}
 	}
 </script>

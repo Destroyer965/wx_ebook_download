@@ -4,12 +4,12 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 const store = new Vuex.Store({
 	state:{
-		userinfo:uni.getStorageSync('userinfo')
+		userinfo:uni.getStorageSync('userinfo'),
 	},
 	mutations:{
 		getUser(state,data){
 			state.userinfo = data
-		}
+		},
 
 	},
 

@@ -175,10 +175,47 @@ export function delSearchHistory(){
 	})
 }
 
-//删除收藏记录
+//添加收藏记录
 export function querySearchHistory(){
 	return request({
 		url: '/book/query/search',
 		method: 'GET',
+	})
+}
+
+//查询搜索排行榜
+export function querySearchrank(){
+	return request({
+		url: '/book/searchrank',
+		method: 'GET',
+	})
+}
+//根据分类条件查询图书
+export function queryBookByCondition(param){
+	return request({
+		url: '/book/conditions/'+param.id+'/'+param.name+'/'+param.sort,
+		method: 'GET',
+	})
+}
+//根据用户id查询下载记录
+export function queryDownloadHistory(data){
+	return request({
+		url: '/download/history',
+		method: 'GET',
+		data
+	})
+}
+//根据用户id添加下载记录
+export function addDownloadHistory(param){
+	return request({
+		url: '/download/history/'+param,
+		method: 'PUT',
+	})
+}
+//根据用户id删除下载记录
+export function delDownloadHistory(param){
+	return request({
+		url: '/download/history/'+param,
+		method: 'DELETE',
 	})
 }

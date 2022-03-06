@@ -60,7 +60,7 @@
 			"path": "download-history/download-history",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 
 		}, {
@@ -84,11 +84,21 @@
                 {
                     "navigationBarTitleText": "",
                     "enablePullDownRefresh": true
+
                 }
                 
                 }
                 ,{
                     "path" : "book-read/book-read",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "error/error",
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "",

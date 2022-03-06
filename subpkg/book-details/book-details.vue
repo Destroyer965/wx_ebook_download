@@ -67,7 +67,8 @@
 		commentById,
 		replayByParentId,
 		download,
-		commentCountById
+		commentCountById,
+		addDownloadHistory
 	} from '../../utils/api'
 	import {
 		mapState,
@@ -337,6 +338,8 @@
 					url: 'https://yangjiahai.oss-accelerate.aliyuncs.com/%E6%94%BB%E5%9F%8E%E7%8B%AE%E8%AE%BA%E5%9D%9B_%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9C%A3%E7%BB%8F%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E5%8E%9F%E4%B9%A6%E7%AC%AC%E4%BA%8C%E7%89%88%EF%BC%89.pdf',
 					// filePath:'/',
 					success: (res) => {
+						//添加下载记录
+						addDownloadHistory(this.bookid)
 						if (res.statusCode == 200) {
 							//保存到本地
 							uni.saveFile({
