@@ -21,7 +21,8 @@
 
 					</view>
 				</view>
-				<view class="sign-in" @click="signIn">签到</view>
+				<view class="sign-in" v-if="isCanSignIn" @click="signIn">签到</view>
+				<view class="sign-in already-signed-in" v-else @click="alreadySignIn">已签到</view>
 			</view>
 			<view class="userinfo-top" v-else>
 				<view class="user-baseinfo">
@@ -77,7 +78,7 @@
 			</navigator>
 			<navigator url="../../subpkg/contact-me/contact-me" class="list-item">
 				<view class="list-item-text">
-					<text class="iconfont icon-tuichu"></text>
+					<text class="iconfont icon-pinglun"></text>
 					<text class="item-text">联系作者</text>
 				</view>
 				<uni-icons type="right"></uni-icons>
@@ -115,6 +116,8 @@
 		getUserInfo,
 		queryDownloadHistory,
 		getCollectionById,
+		registration,
+		firstinto
 	} from "../../utils/api.js"
 	import {
 		mapState,
@@ -129,7 +132,8 @@
 					pageSize: 1
 				},
 				downloadCount: 0,
-				collectionCount: 0
+				collectionCount: 0,
+				isCanSignIn: true
 
 			}
 		},
@@ -137,10 +141,25 @@
 			//将用户信息存入vuex中
 			...mapMutations(['getUser']),
 			// 签到
-			signIn() {
-				console.log(this.userinfo)
+			async signIn() {
+				let res = await registration();
+				console.log(res)
+				if (res === 1) {
+					this.isCanSignIn = false;
+					this.userInfo()
+					uni.showToast({
+						title: "签到成功",
+					})
+				} else {
+					this.isCanSignIn = true;
+				}
+				console.log(res)
+			},
+			//已签到
+			alreadySignIn() {
 				uni.showToast({
-					title: '签到成功'
+					title: "您今天已经签到了，请明天再来！",
+					icon: "none"
 				})
 			},
 			login() {
@@ -193,12 +212,12 @@
 			},
 
 			// 获取用户信息
-			userInfo() {
-				getUserInfo().then(res => {
-					//将用户信息存储到Storage中
-					uni.setStorageSync('userinfo', res)
-					this.getUser(res)
-				})
+			async userInfo() {
+				let res = await getUserInfo()
+				//用户信息存入Storage
+				uni.setStorageSync('userinfo', res)
+				//用户信息存入vuex
+				this.getUser(res)
 			},
 			// 退出登录
 			logout() {
@@ -207,11 +226,13 @@
 					title: '你确定要退出吗？',
 					itemList: ['退出登录'],
 					itemColor: '#FE2B2B',
-					async success() {
-						await logout()
+					success() {
+						logout()
 						// 清除Storage
 						uni.removeStorageSync('token')
 						uni.removeStorageSync('userinfo')
+						that.downloadCount=0;
+						that.collectionCount=0
 						//清除vuex中的数据//
 						that.getUser(null)
 						uni.showToast({
@@ -221,16 +242,32 @@
 				})
 			},
 			async getDownloadHistory() {
+				if(!uni.getStorageSync("userinfo")){
+					return;
+				}
 				let res = await queryDownloadHistory(this.query);
 				this.downloadCount = res.total
 			},
 			async getCollection() {
+				if(!uni.getStorageSync("userinfo")){
+					return;
+				}
 				let res = await getCollectionById(this.query);
 				this.collectionCount = res.total
+			},
+			async isFirstinto() {
+				let res = await firstinto()
+				//用户一天内首次进入小程序可以进行签到，否则不能进行签到
+				if (res) {
+					this.isCanSignIn = true
+				} else {
+					this.isCanSignIn = false
+				}
 			}
 
 		},
 		onLoad() {
+			this.isFirstinto()
 			this.getDownloadHistory()
 			this.getCollection()
 		},
@@ -324,6 +361,10 @@
 					line-height: 60rpx;
 					font-weight: 800;
 					background-color: #E85656;
+				}
+
+				.already-signed-in {
+					background-color: #ccc;
 				}
 
 			}

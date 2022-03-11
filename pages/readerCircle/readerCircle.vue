@@ -1,14 +1,20 @@
 <template>
-	<view >
-		<circle-friends :myinfo="myinfo"></circle-friends>
+	<view>
+		<circle-friends :userinfo="userinfo"></circle-friends>
 		<view>
-			<uni-fab  horizontal="right" class="uni-fab" vertical="bottom" @fabClick="fabClick"></uni-fab>
+			<uni-fab horizontal="right" class="uni-fab" vertical="bottom" @fabClick="fabClick"></uni-fab>
 		</view>
 		<circle-friends-item :previewList="previewList"></circle-friends-item>
 	</view>
 </template>
 
 <script>
+	import {
+		mapState
+	} from 'vuex'
+	import {
+		queryReadcircle
+	} from '../../utils/api.js'
 	export default {
 		data() {
 			return {
@@ -18,81 +24,36 @@
 					bgImgSrc: 'http://wx-ebook-download.oss-cn-chengdu.aliyuncs.com/freind-cicle-background/IMG_2532.JPG',
 					avartar: 'https://img1.baidu.com/it/u=2978275592,376851900&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=498'
 				}],
-				previewList:[
-					{
-						id:2,
-						userAvatar:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255',
-						nickName:'沉迷学习无法自拔',
-						contentText:'今天又是充满希望的一天呢',
-						contentImg:[{
-							id:1,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},
-						{
-							id:2,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},
-						{
-							id:3,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},{
-							id:4,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},{
-							id:5,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},
-						{
-							id:6,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},{
-							id:7,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},
-						{
-							id:8,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},
-						{
-							id:9,
-							imgSrc:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255'
-						},
-						],
-						location:'腾冲市',
-						previewTime:'1小时前',
-						fabulousList:['全村的希望'],
-						reviewList:[
-							{reviewName:'全村的希望',reviewContext:'我也是这样认为的！'},
-							{reviewName:'全村的希望',reviewContext:'确实！'}
-						]
-					},
-					{
-						id:2,
-						userAvatar:'https://img0.baidu.com/it/u=2704063193,2599266382&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255',
-						nickName:'沉迷学习无法自拔',
-						contentText:'今天又是充满希望的一天呢',
-						previewTime:'1小时前',
-						fabulousList:['全村的希望'],
-						reviewList:[
-							{reviewName:'全村的希望',reviewContext:'确实！'}
-						]
-					},
-				]
+				previewList: [],
+				query:{
+					pageNo:1,
+					pageSize:3
+				},
+				total:0
 			}
 		},
 		methods: {
 			fabClick() {
 				uni.navigateTo({
-					url:'../../subpkg/write-friend-circle/write-friend-circle'
+					url: '../../subpkg/write-friend-circle/write-friend-circle'
 				})
 			},
+			async getReadcircle() {
+				let res = await queryReadcircle(this.query);
+				console.log(res)
+				this.previewList = res.data
+				this.total = res.total
+			}
 		},
 		onLoad() {
-			
+			this.getReadcircle();
+		},
+		computed: {
+			...mapState(['userinfo'])
 		}
 	}
 </script>
 
 <style lang="scss">
-	
+
 </style>

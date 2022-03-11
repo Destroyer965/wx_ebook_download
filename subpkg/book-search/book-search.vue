@@ -78,7 +78,10 @@
 		},
 
 		methods: {
+			//添加搜索历史
 			addHistory(id) {
+				//添加图书搜索次数
+				addSearchHistory(id);
 				let searchArr = uni.getStorageSync('searchList') || [];
 				searchArr.unshift(id)
 				uni.setStorageSync("searchList", searchArr)
@@ -102,7 +105,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							uni.removeStorageSync("searchList")
-							this.searchHistory=[]
+							this.searchHistory = []
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
@@ -118,7 +121,7 @@
 				let res = await fuzzyQueryBook(this.inputValue);
 				this.searchContext = res
 			},
-			toDetail(id) {
+			async toDetail(id) {
 				uni.navigateTo({
 					url: '../../subpkg/book-details/book-details?id=' + id
 				})

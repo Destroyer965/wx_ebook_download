@@ -10,6 +10,7 @@ function service(options = {}) {
 	//配置请求头
 	options.header = {
 		'content-type': 'application/x-www-form-urlencoded',
+		// 'content-type': 'application/json;charset=UTF-8',
 		'Authorization': `${token}`
 	};
 	return new Promise((resolved, rejected) => {
@@ -26,7 +27,6 @@ function service(options = {}) {
 				});
 				rejected(res.data.msg); //错误
 			}
-
 		}
 		//错误
 		options.fail = (err) => {

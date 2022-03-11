@@ -1,32 +1,28 @@
 <template>
 	<view>
-		<block v-for="item in myinfo" :key="item.id">
-			<view class="circle-friends" @longpress="longpress" @click="reviewImage(bgImgSrc)"
-				:style="{backgroundImage: 'url('+ item.bgImgSrc + ')'}">
-				<view class="personinfo">
-					<text class="nickname">{{item.nickname}}</text>
-					<image :src="item.avartar" class="avatar"></image>
-				</view>
+		<view class="circle-friends" 
+			:style="{backgroundImage: 'url('+ userinfo.backgroundImg + ')'}">
+			<view class="personinfo">
+				<text class="nickname">{{userinfo.username}}</text>
+				<image  @click="reviewImage(userinfo.avatar)"  :src="userinfo.avatar" class="avatar"></image>
 			</view>
-		</block>
+		</view>
 	</view>
 
 </template>
 
 <script>
 	import {
+		mapState
+	} from 'vuex'
+	import {
 		previewImage
 	} from '../../utils/previewPictures.js'
 	export default {
 		props: {
-			'myinfo': {
-				type: Array,
-				default: [{
-					id: 1,
-					nickname: '🐶',
-					bgImgSrc: 'http://wx-ebook-download.oss-cn-chengdu.aliyuncs.com/freind-cicle-background/IMG_2532.JPG',
-					avartar: 'https://img1.baidu.com/it/u=2978275592,376851900&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=498'
-				}]
+			'userinfo': {
+				type: Object,
+				required: true
 			}
 		},
 		name: "circle-friends",
@@ -38,10 +34,8 @@
 			reviewImage(bgImgSrc) {
 				previewImage(bgImgSrc)
 			},
-			longpress() {
-				console.log(1)
-			}
-		}
+		},
+
 	}
 </script>
 

@@ -11,6 +11,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-jubao:before {
+  content: "\e607";
+}
+
 .icon-shoucang1:before {
   content: "\e604";
 }
@@ -41,10 +45,6 @@
 
 .icon-gengduo:before {
   content: "\e626";
-}
-
-.icon-lianxi:before {
-  content: "\e66f";
 }
 
 .icon-biaoqing:before {

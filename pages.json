@@ -17,7 +17,7 @@
 			"path": "pages/readerCircle/readerCircle",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				// #ifdef MP-WEIXIN
 				"navigationStyle": "custom"
 				// #endif
@@ -103,6 +103,17 @@
                 {
                     "navigationBarTitleText": "",
                     "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "report/report",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false,
+					"navigationBarBackgroundColor":"#fff",   
+					"navigationBarTextStyle":"black"
                 }
                 
                 }

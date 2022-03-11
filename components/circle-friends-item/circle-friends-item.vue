@@ -2,27 +2,27 @@
 	<view @click="hideIsShow">
 		<view class="circle-friends-item" v-for="(item,index) in previewList" :key="item.id">
 			<view class="left-img">
-				<image :src="item.userAvatar"></image>
+				<image :src="item.reviewer.avatar" @click="()=>previewImg(item.reviewer.avatar)"></image>
 			</view>
 			<view class="right-box">
-				<text class="nickname">{{item.nickName}}</text>
+				<text class="nickname">{{item.reviewer.username}}</text>
 				<view class="circle-friends-content">
-					<view class="circle-friends-content-text">
+					<view class="circle-friends-content-text" v-if="item.contentText">
 						{{item.contentText}}
 					</view>
-					<view class="circle-friends-content-img">
-						<block v-for="(img,index) in item.contentImg" :key="img.id">
-							<image @click="previewImg(img.imgSrc)" :src="img.imgSrc">
+					<view class="circle-friends-content-img" @click="contentImg(item.imgList)"  v-if="item.imgList">
+						<block v-for="(img,index) in item.imgList" :key="img.id">
+							<image @click="()=>previewImg(img)"   :src="img">
 							</image>
 						</block>
 					</view>
 				</view>
-				<view class="location" @click="viewLocation">{{item.location}}</view>
+				<view class="location" @click="viewLocation(item.latitude,item.longitude)">{{item.location}}</view>
 				<view class="right-box-bottom">
 					<text class="left-time">{{item.previewTime}}</text>
-
 					<view class="right-more">
-						<my-popup ref="more" class="my-popup"  :class="[isShow == index ? 'show' : 'hide']"  ></my-popup>
+						<my-popup @popup="popup" ref="more" class="my-popup"
+							:class="[isShow == index ? 'show' : 'hide']"></my-popup>
 						<text class="iconfont icon-gengduo" @click.stop="more(index)"></text>
 					</view>
 				</view>
@@ -62,8 +62,8 @@
 			};
 		},
 		methods: {
+			//预览图片
 			previewImg(imgSrc) {
-				console.log(imgSrc)
 				previewImage(imgSrc);
 			},
 			more(index) {
@@ -77,11 +77,13 @@
 			hideIsShow: function() {
 				this.isShow = -1;
 			},
-
-			viewLocation() {
+			popup() {
+				console.log(1)
+			},
+			viewLocation(latitude, longitude) {
 				uni.openLocation({
-					longitude: 116.39747,
-					latitude: 39.9085
+					longitude,
+					latitude
 				})
 			}
 

@@ -17,7 +17,7 @@ export function logout() {
 // 获取用户信息
 export function getUserInfo() {
 	return request({
-		url: '/auth/getUserInfo',
+		url: '/user/userinfo',
 		method: 'GET',
 	})
 }
@@ -160,7 +160,7 @@ export function fuzzyQueryBook(param){
 		method: 'GET',
 	})
 }
-//添加收藏记录
+//添加搜索录
 export function addSearchHistory(param){
 	return request({
 		url: '/book/search/'+param,
@@ -175,7 +175,7 @@ export function delSearchHistory(){
 	})
 }
 
-//添加收藏记录
+//查询搜索记录
 export function querySearchHistory(){
 	return request({
 		url: '/book/query/search',
@@ -217,5 +217,42 @@ export function delDownloadHistory(param){
 	return request({
 		url: '/download/history/'+param,
 		method: 'DELETE',
+	})
+}
+// 签到
+export function registration(){
+	return request({
+		url: '/user/signIn',
+		method: 'PUT'
+	})
+}
+// 用户一天内是否第一次进入
+export function firstinto(){
+	return request({
+		url: '/user/firstinto',
+		method: 'GET'
+	})
+}
+//发表读友圈
+export function addCircleFriend(data){
+	return request({
+		url:'/readcircle/add',
+		method:'POST',
+		data
+	})
+}
+//上传图片
+export function uploadImg(data){
+	return request({
+		url:'/upload/img',
+		method:'POST',
+		data
+	})
+}
+//查询读友圈列表
+export function queryReadcircle(param){
+	return request({
+		url:'/readcircle/selectpage?pageNo='+param.pageNo+"&pageSize="+param.pageSize,
+		method:'GET',
 	})
 }

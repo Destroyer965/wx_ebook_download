@@ -1,5 +1,5 @@
 <template>
-	<view class="my-popup">
+	<view class="my-popup" @click="popup">
 		<view class="my-popup-box">
 			<view class="my-popup-box-item fabulous">
 				<text class="iconfont icon-xihuan"></text>
@@ -9,6 +9,11 @@
 			<view class="my-popup-box-item comment">
 				<text class="iconfont icon-pinglun"></text>
 				<text class="my-popup-box-item-text">评论</text>
+			</view>
+			<text>|</text>
+			<view class="my-popup-box-item comment" @click="report">
+				<text class="iconfont icon-jubao"></text>
+				<text class="my-popup-box-item-text">举报</text>
 			</view>
 		</view>
 	</view>
@@ -21,12 +26,21 @@
 			return {
 
 			};
+		},
+		methods:{
+			popup(){
+				this.$emit('popup')
+			},
+			report(){
+				uni.navigateTo({
+					url:'../../subpkg/report/report'
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="less">
-
 	.my-popup-box {
 		display: flex;
 		justify-content: space-around;
@@ -39,7 +53,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			margin: 0 15px 0 15px;
+			margin: 0 12px 0 12px;
 
 			.iconfont {
 				font-size: 18px;
